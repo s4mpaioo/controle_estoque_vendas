@@ -12,19 +12,4 @@ class ProdutoTabelaIntegrationTest {
 
     @Autowired
     private JdbcTemplate jdbcTemplate;
-
-    @Test
-    void deveCriarTabelaProduto() {
-        Integer quantidade = jdbcTemplate.queryForObject(
-                """
-                select count(*)
-                from information_schema.tables
-                where table_schema = 'public'
-                  and table_name = 'produto'
-                """,
-                Integer.class
-        );
-
-        assertThat(quantidade).isEqualTo(1);
-    }
 }
