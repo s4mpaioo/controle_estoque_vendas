@@ -9,7 +9,7 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>br.com.stock</groupId>
-	<artifactId>controle_estoque_vendas</artifactId>
+	<artifactId>stockup</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name/>
 	<description/>

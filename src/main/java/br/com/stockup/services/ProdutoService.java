@@ -1,7 +1,7 @@
-package br.com.stock.controleestoquevendas.services;
+package br.com.stockup.services;
 
-import br.com.stock.controleestoquevendas.domains.entity.Produto;
-import br.com.stock.controleestoquevendas.repositories.ProdutoRepository;
+import br.com.stockup.domains.entity.Produto;
+import br.com.stockup.repositories.ProdutoRepository;
 import org.springframework.stereotype.Service;
 
 @Service

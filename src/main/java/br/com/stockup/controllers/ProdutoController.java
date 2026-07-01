@@ -1,7 +1,7 @@
-package br.com.stock.controleestoquevendas.controllers;
+package br.com.stockup.controllers;
 
-import br.com.stock.controleestoquevendas.domains.entity.Produto;
-import br.com.stock.controleestoquevendas.services.ProdutoService;
+import br.com.stockup.domains.entity.Produto;
+import br.com.stockup.services.ProdutoService;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;

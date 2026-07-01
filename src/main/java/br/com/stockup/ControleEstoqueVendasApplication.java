@@ -1,4 +1,4 @@
-package br.com.stock.controleestoquevendas;
+package br.com.stockup;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

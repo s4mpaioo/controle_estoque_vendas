@@ -1,0 +1,43 @@
+package br.com.stockup.domains.entity;
+
+import br.com.stockup.enums.ModeloProduto;
+import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+import java.util.List;
+
+@Entity
+@Table(name = "produto")
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+
+public class Produto {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @Column(nullable = false)
+    private String nome;
+
+    @Column(nullable = false)
+    private String marca;
+
+    @Column(nullable = false)
+    private String referencia;
+
+    @Enumerated(EnumType.STRING)
+    private ModeloProduto modelo;
+
+    @ManyToOne
+    @JoinColumn(name = "loja_id")
+    private Loja loja;
+
+    @OneToMany(mappedBy = "produto", cascade = CascadeType.ALL)
+    private List<EstoqueProduto> estoques;
+}
