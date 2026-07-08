@@ -1,4 +1,4 @@
-package br.com.stockup.domains.entity;
+package br.com.stockup.model;
 
 import br.com.stockup.enums.TipoEstoque;
 import jakarta.persistence.*;
@@ -39,7 +39,7 @@ public class EstoqueProduto {
 
     @ManyToOne
     @JoinColumn(name = "produto_id")
-    private br.com.stockup.domains.entity.Produto produto;
+    private Produto produto;
 
     @OneToMany(mappedBy = "estoqueProduto", cascade = CascadeType.ALL)
     private List<TamanhoEstoque> tamanhos;

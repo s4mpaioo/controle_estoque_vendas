@@ -1,4 +1,4 @@
-package br.com.stockup.domains.entity;
+package br.com.stockup.model;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;

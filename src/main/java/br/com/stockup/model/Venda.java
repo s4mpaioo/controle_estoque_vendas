@@ -1,5 +1,4 @@
-package br.com.stockup.domains.entity;
-
+package br.com.stockup.model;
 import br.com.stockup.enums.FormaPagamento;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -9,6 +8,7 @@ import lombok.Setter;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
 @Table(name = "venda")

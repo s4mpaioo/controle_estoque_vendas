@@ -1,7 +1,5 @@
-package br.com.stockup.domains.entity;
+package br.com.stockup.model;
 
-
-import br.com.stockup.domains.entity.Cliente;
 import br.com.stockup.enums.TipoLoja;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -34,7 +32,7 @@ public class Loja {
     private Usuario usuario;
 
     @OneToMany(mappedBy = "loja")
-    private List<br.com.stockup.domains.entity.Produto> produtos;
+    private List<Produto> produtos;
 
     @OneToMany(mappedBy = "loja")
     private List<Cliente> clientes;

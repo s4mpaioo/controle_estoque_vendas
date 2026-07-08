@@ -1,4 +1,4 @@
-package br.com.stockup.domains.entity;
+package br.com.stockup.model;
 
 import jakarta.persistence.*;
 import lombok.*;
@@ -13,6 +13,7 @@ import java.time.LocalDate;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Parcela {
+
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

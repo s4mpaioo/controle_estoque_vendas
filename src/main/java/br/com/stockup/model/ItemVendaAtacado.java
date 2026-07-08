@@ -1,4 +1,4 @@
-package br.com.stockup.domains.entity;
+package br.com.stockup.model;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -14,7 +14,7 @@ import java.math.BigDecimal;
 @NoArgsConstructor
 @AllArgsConstructor
 
-public class VendaAtacado {
+public class ItemVendaAtacado {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

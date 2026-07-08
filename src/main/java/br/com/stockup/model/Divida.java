@@ -1,5 +1,4 @@
-package br.com.stockup.domains.entity;
-
+package br.com.stockup.model;
 
 import br.com.stockup.enums.PeriodicidadePagamento;
 import jakarta.persistence.*;
