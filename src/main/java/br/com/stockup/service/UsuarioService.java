@@ -1,12 +1,15 @@
 package br.com.stockup.service;
 
 import br.com.stockup.dto.CadastroUsuario;
+import br.com.stockup.dto.LoginUsuario;
 import br.com.stockup.enums.PerfilUsuario;
 import br.com.stockup.model.Loja;
 import br.com.stockup.model.Usuario;
 import br.com.stockup.repository.LojaRepository;
 import br.com.stockup.repository.UsuarioRepository;
 import org.springframework.stereotype.Service;
+
+import java.util.Optional;
 
 @Service
 public class UsuarioService {
@@ -43,5 +46,18 @@ public class UsuarioService {
         loja.setUsuario(usuario);
 
         lojaRepository.save(loja);
+    }
+
+    public void login(LoginUsuario dto) {
+        Optional<Usuario> usuario = usuarioRepository.findByEmail(dto.getEmail()); //procurar um usuario com esse email
+        if(usuario.isEmpty()) {
+            throw new RuntimeException("Email ou senha inválidos.");
+        }
+
+        Usuario usuarioEncontrado = usuario.get();
+
+        if(!usuarioEncontrado.getSenha().equals(dto.getSenha())) {
+            throw new RuntimeException("Email ou senha inválidos.");
+        }
     }
 }
