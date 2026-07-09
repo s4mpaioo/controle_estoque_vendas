@@ -7,6 +7,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Entity //cria uma tabela no banco
@@ -29,6 +30,10 @@ public class Usuario {
 
     @Column(nullable = false)
     private String senha;
+
+    private String codigoRecuperacao;
+
+    private LocalDateTime expiracaoCodigo;
 
     @Enumerated(EnumType.STRING)
     private PerfilUsuario perfil;

@@ -1,8 +1,7 @@
 package br.com.stockup.controller;
 
-import br.com.stockup.dto.CadastroUsuario;
-import br.com.stockup.dto.LoginUsuario;
-import br.com.stockup.repository.UsuarioRepository;
+import br.com.stockup.dto.*;
+import br.com.stockup.dto.RedefinirSenha;
 import br.com.stockup.service.UsuarioService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -29,5 +28,23 @@ public class UsuarioController {
     public ResponseEntity <String> login(@RequestBody LoginUsuario dto) {
         usuarioService.login(dto);
         return ResponseEntity.ok("Login realizado com sucesso.");
+    }
+
+    @PostMapping("/redefinir-senha")
+    public ResponseEntity <String> redefinirSenha(@RequestBody RedefinirSenha dto) {
+        usuarioService.redefinirSenha(dto);
+        return ResponseEntity.ok("O código foi enviado para seu email.");
+    }
+
+    @PostMapping("validar-codigo")
+    public ResponseEntity <String> validarCodigo(@RequestBody ValidarCodigo dto) {
+        usuarioService.validarCodigo(dto);
+        return ResponseEntity.ok("Código válido.");
+    }
+
+    @PostMapping("nova-senha")
+    public ResponseEntity <String> novaSenha(@RequestBody NovaSenha dto) {
+        usuarioService.novaSenha(dto);
+        return ResponseEntity.ok("Senha alterada com sucesso.");
     }
 }

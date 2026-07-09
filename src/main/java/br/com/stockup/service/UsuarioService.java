@@ -1,13 +1,14 @@
 package br.com.stockup.service;
 
-import br.com.stockup.dto.CadastroUsuario;
-import br.com.stockup.dto.LoginUsuario;
+import br.com.stockup.dto.*;
 import br.com.stockup.enums.PerfilUsuario;
 import br.com.stockup.model.Loja;
 import br.com.stockup.model.Usuario;
 import br.com.stockup.repository.LojaRepository;
 import br.com.stockup.repository.UsuarioRepository;
 import org.springframework.stereotype.Service;
+import java.util.Random;
+import java.time.LocalDateTime;
 
 import java.util.Optional;
 
@@ -16,11 +17,13 @@ public class UsuarioService {
     //conversa com o backend
     private final UsuarioRepository usuarioRepository;
     private final LojaRepository lojaRepository;
+    private final EmailService emailService;
 
     //para o spring entregar os repositories
-    public UsuarioService(UsuarioRepository usuarioRepository, LojaRepository lojaRepository) {
+    public UsuarioService(UsuarioRepository usuarioRepository, LojaRepository lojaRepository, EmailService emailService) {
         this.usuarioRepository = usuarioRepository;
         this.lojaRepository = lojaRepository;
+        this.emailService = emailService;
     }
 
     /*o que a service faz
@@ -60,4 +63,30 @@ public class UsuarioService {
             throw new RuntimeException("Email ou senha inválidos.");
         }
     }
-}
+
+    public void redefinirSenha(RedefinirSenha dto) {
+        Optional <Usuario> usuario = usuarioRepository.findByEmail(dto.getEmail());
+        if(usuario.isEmpty()) {
+            throw new RuntimeException("Email não encontrado.");
+        }
+
+        Usuario usuarioEncontrado = usuario.get();
+        Random random = new Random(); //usando a classe random para gerar o codigo de redefinir senha
+        int codigo = random.nextInt(900000) + 100000;
+
+        usuarioEncontrado.setCodigoRecuperacao(String.valueOf(codigo)); //converte de inteiro para string
+        usuarioEncontrado.setExpiracaoCodigo(LocalDateTime.now().plusMinutes(10));
+
+        usuarioRepository.save(usuarioEncontrado);
+
+        emailService.enviarCodigoRecuperacao(usuarioEncontrado.getEmail(), usuarioEncontrado.getCodigoRecuperacao());
+        }
+
+        public void validarCodigo(ValidarCodigo dto) {
+
+        }
+
+        public void novaSenha(NovaSenha dto) {
+
+        }
+    }
