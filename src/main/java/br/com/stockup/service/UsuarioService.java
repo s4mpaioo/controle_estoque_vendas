@@ -6,7 +6,9 @@ import br.com.stockup.model.Loja;
 import br.com.stockup.model.Usuario;
 import br.com.stockup.repository.LojaRepository;
 import br.com.stockup.repository.UsuarioRepository;
+import br.com.stockup.security.JwtTokenProvider;
 import org.springframework.stereotype.Service;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import java.util.Random;
 import java.time.LocalDateTime;
 
@@ -18,12 +20,16 @@ public class UsuarioService {
     private final UsuarioRepository usuarioRepository;
     private final LojaRepository lojaRepository;
     private final EmailService emailService;
+    private final PasswordEncoder passwordEncoder;
+    private final JwtTokenProvider jwtTokenProvider;
 
     //para o spring entregar os repositories
-    public UsuarioService(UsuarioRepository usuarioRepository, LojaRepository lojaRepository, EmailService emailService) {
+    public UsuarioService(UsuarioRepository usuarioRepository, LojaRepository lojaRepository, EmailService emailService, PasswordEncoder passwordEncoder, JwtTokenProvider jwtTokenProvider) {
         this.usuarioRepository = usuarioRepository;
         this.lojaRepository = lojaRepository;
         this.emailService = emailService;
+        this.passwordEncoder = passwordEncoder;
+        this.jwtTokenProvider = jwtTokenProvider;
     }
 
     /*o que a service faz
@@ -33,11 +39,11 @@ public class UsuarioService {
         if(usuarioRepository.existsByEmail(dto.getEmail())){
             throw new RuntimeException("Email já cadastrado");
         }
-        //criar o usuario
+
         Usuario usuario = new Usuario();
         usuario.setNome(dto.getNome());
         usuario.setEmail(dto.getEmail());
-        usuario.setSenha(dto.getSenha());
+        usuario.setSenha(passwordEncoder.encode(dto.getSenha()));
         usuario.setPerfil(PerfilUsuario.PROPRIETARIO);
 
         usuarioRepository.save(usuario);
@@ -51,17 +57,44 @@ public class UsuarioService {
         lojaRepository.save(loja);
     }
 
-    public void login(LoginUsuario dto) {
-        Optional<Usuario> usuario = usuarioRepository.findByEmail(dto.getEmail()); //procurar um usuario com esse email
+    public LoginResponse login(LoginUsuario dto) {
+        Optional<Usuario> usuario = usuarioRepository.findByEmail(dto.getEmail());
         if(usuario.isEmpty()) {
             throw new RuntimeException("Email ou senha inválidos.");
         }
 
         Usuario usuarioEncontrado = usuario.get();
+        String senhaArmazenada = usuarioEncontrado.getSenha();
 
-        if(!usuarioEncontrado.getSenha().equals(dto.getSenha())) {
-            throw new RuntimeException("Email ou senha inválidos.");
+        // Detecta se é hash BCrypt
+        boolean ehBcrypt = senhaArmazenada != null &&
+            (senhaArmazenada.startsWith("$2a$") ||
+             senhaArmazenada.startsWith("$2b$") ||
+             senhaArmazenada.startsWith("$2y$"));
+
+        if (ehBcrypt) {
+            if (!passwordEncoder.matches(dto.getSenha(), senhaArmazenada)) {
+                throw new RuntimeException("Email ou senha inválidos.");
+            }
+        } else {
+            if (!dto.getSenha().equals(senhaArmazenada)) {
+                throw new RuntimeException("Email ou senha inválidos.");
+            }
+            usuarioEncontrado.setSenha(passwordEncoder.encode(dto.getSenha()));
+            usuarioRepository.save(usuarioEncontrado);
         }
+
+        // Gera token JWT
+        String token = jwtTokenProvider.generateToken(usuarioEncontrado);
+        long expiresIn = jwtTokenProvider.getExpirationTime();
+
+        return new LoginResponse(
+            token,
+            "Bearer",
+            usuarioEncontrado.getId(),
+            usuarioEncontrado.getEmail(),
+            expiresIn
+        );
     }
 
     public void redefinirSenha(RedefinirSenha dto) {
@@ -83,10 +116,64 @@ public class UsuarioService {
         }
 
         public void validarCodigo(ValidarCodigo dto) {
+                Optional<Usuario> usuario = usuarioRepository.findByEmail(dto.getEmail());
+                if (usuario.isEmpty()) {
+                    throw new RuntimeException("Email não encontrado.");
+                }
 
-        }
+                Usuario usuarioEncontrado = usuario.get();
+
+                // verifica se o código foi gerado
+                if (usuarioEncontrado.getCodigoRecuperacao() == null || usuarioEncontrado.getExpiracaoCodigo() == null) {
+                    throw new RuntimeException("Nenhum código de recuperação foi solicitado para este email.");
+                }
+
+                // verifica se o código expirou
+                if (LocalDateTime.now().isAfter(usuarioEncontrado.getExpiracaoCodigo())) {
+                    throw new RuntimeException("Código expirado.");
+                }
+
+                // verifica se o código informado esta correto
+                if (!usuarioEncontrado.getCodigoRecuperacao().equals(dto.getCodigo())) {
+                    throw new RuntimeException("Código inválido.");
+                }
+            }
 
         public void novaSenha(NovaSenha dto) {
+                Optional<Usuario> usuario = usuarioRepository.findByEmail(dto.getEmail());
+                if (usuario.isEmpty()) {
+                    throw new RuntimeException("Email não encontrado.");
+                }
 
-        }
+                Usuario usuarioEncontrado = usuario.get();
+
+                if (usuarioEncontrado.getCodigoRecuperacao() == null || usuarioEncontrado.getExpiracaoCodigo() == null) {
+                    throw new RuntimeException("Nenhum código de recuperação foi solicitado para este email.");
+                }
+
+                if (LocalDateTime.now().isAfter(usuarioEncontrado.getExpiracaoCodigo())) {
+                    throw new RuntimeException("Código expirado.");
+                }
+
+                if (!usuarioEncontrado.getCodigoRecuperacao().equals(dto.getCodigo())) {
+                    throw new RuntimeException("Código inválido.");
+                }
+
+                if (dto.getNovaSenha() == null || dto.getConfirmarSenha() == null) {
+                    throw new RuntimeException("Preencha a nova senha.");
+                }
+
+                if (!dto.getNovaSenha().equals(dto.getConfirmarSenha())) {
+                    throw new RuntimeException("As senhas não coincidem.");
+                }
+
+                // Atualiza a senha com hash BCrypt
+                usuarioEncontrado.setSenha(passwordEncoder.encode(dto.getNovaSenha()));
+
+                // Invalida o código de recuperação
+                usuarioEncontrado.setCodigoRecuperacao(null);
+                usuarioEncontrado.setExpiracaoCodigo(null);
+
+                usuarioRepository.save(usuarioEncontrado);
+            }
     }

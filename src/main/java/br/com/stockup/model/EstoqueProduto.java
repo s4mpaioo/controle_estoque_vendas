@@ -32,7 +32,10 @@ public class EstoqueProduto {
     private Integer paresPorFicha;
 
     @Column(nullable = false)
-    private BigDecimal valorUnitario;
+    private BigDecimal precoCompra;
+
+    @Column(nullable = false)
+    private BigDecimal precoVenda;
 
     @Enumerated(EnumType.STRING)
     private TipoEstoque tipoEstoque;

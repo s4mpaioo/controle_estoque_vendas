@@ -12,7 +12,6 @@ public interface ProdutoRepository extends JpaRepository<br.com.stockup.model.Pr
 
     List<br.com.stockup.model.Produto> findByNome(String nome); // aqui é onde faz a consulta
 
-    /*
-    * SELECT * FROM produto WHERE nome = ?
-    * */
+    boolean existsByReferencia(String referencia);
+
 }

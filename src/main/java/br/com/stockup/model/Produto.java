@@ -34,6 +34,9 @@ public class Produto {
     @Enumerated(EnumType.STRING)
     private ModeloProduto modelo;
 
+    @Column(length = 500)
+    private String descricao;
+
     @ManyToOne
     @JoinColumn(name = "loja_id")
     private Loja loja;

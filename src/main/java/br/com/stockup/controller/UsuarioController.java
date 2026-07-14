@@ -4,6 +4,8 @@ import br.com.stockup.dto.*;
 import br.com.stockup.dto.RedefinirSenha;
 import br.com.stockup.service.UsuarioService;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.HttpStatus;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -25,9 +27,15 @@ public class UsuarioController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity <String> login(@RequestBody LoginUsuario dto) {
-        usuarioService.login(dto);
-        return ResponseEntity.ok("Login realizado com sucesso.");
+    public ResponseEntity<LoginResponse> login(@RequestBody LoginUsuario dto) {
+        LoginResponse response = usuarioService.login(dto);
+        return ResponseEntity.ok(response);
+    }
+
+    @PostMapping("/logout")
+    public ResponseEntity<String> logout() {
+        SecurityContextHolder.clearContext();
+        return ResponseEntity.ok("Logout realizado com sucesso.");
     }
 
     @PostMapping("/redefinir-senha")
