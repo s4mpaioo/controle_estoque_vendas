@@ -22,9 +22,6 @@ public class EstoqueProduto {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false)
-    private String cor;
-
     private String grade;
 
     private Integer quantidadeTotalPares; // soma total dos pares disponíveis

@@ -2,6 +2,7 @@ package br.com.stockup.model;
 
 import br.com.stockup.enums.ModeloProduto;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -23,6 +24,7 @@ public class Produto {
     private Long id;
 
     @Column(nullable = false)
+    @NotBlank(message = "O nome do produto não pode ser vazio")
     private String nome;
 
     @Column(nullable = false)
@@ -33,6 +35,9 @@ public class Produto {
 
     @Enumerated(EnumType.STRING)
     private ModeloProduto modelo;
+
+    @Column(nullable = false)
+    private String cor;
 
     @Column(length = 500)
     private String descricao;

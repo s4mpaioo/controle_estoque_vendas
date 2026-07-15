@@ -4,8 +4,6 @@ import br.com.stockup.enums.ModeloProduto;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.math.BigDecimal;
-
 @Getter
 @Setter
 public class CadastroProduto {
@@ -13,5 +11,6 @@ public class CadastroProduto {
     private String nome;
     private String marca;
     private ModeloProduto modelo;
+    private String cor;
     private String descricao;
 }
