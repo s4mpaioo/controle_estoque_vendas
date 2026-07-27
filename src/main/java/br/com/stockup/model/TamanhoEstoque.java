@@ -1,5 +1,6 @@
 package br.com.stockup.model;
 
+import br.com.stockup.enums.Tamanho;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -14,11 +15,13 @@ import lombok.Setter;
 @AllArgsConstructor
 
 public class TamanhoEstoque {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String tamanho;
+    @Enumerated(EnumType.STRING)
+    private Tamanho tamanho;
 
     private Integer quantidade;
 

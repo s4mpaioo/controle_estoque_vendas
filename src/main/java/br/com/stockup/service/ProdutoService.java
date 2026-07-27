@@ -2,11 +2,12 @@ package br.com.stockup.service;
 
 import br.com.stockup.dto.CadastroProduto;
 import br.com.stockup.model.EstoqueProduto;
+import br.com.stockup.model.Loja;
 import br.com.stockup.model.Produto;
+import br.com.stockup.repository.LojaRepository;
 import org.springframework.stereotype.Service;
 import br.com.stockup.repository.ProdutoRepository;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -14,13 +15,20 @@ import java.util.Optional;
 public class ProdutoService {
 
     private final ProdutoRepository produtoRepository;
+    private final LojaRepository lojaRepository;
 
-    public ProdutoService(ProdutoRepository produtoRepository) {
+    public ProdutoService(ProdutoRepository produtoRepository, LojaRepository lojaRepository) {
         this.produtoRepository = produtoRepository;
+        this.lojaRepository = lojaRepository;
     }
 
     public void cadastrarProduto(CadastroProduto dto) {
-        if (produtoRepository.existsByReferenciaAndCor(dto.getReferencia(), dto.getCor())) {
+        validarProduto(dto);
+
+        Loja loja = lojaRepository.findById(dto.getLojaId())
+                .orElseThrow(() -> new RuntimeException("Loja não encontrada."));
+
+        if(produtoRepository.existsByReferenciaAndCor(dto.getReferencia(), dto.getCor())) {
             throw new RuntimeException("Já existe um produto com esta referência e cor.");
         }
 
@@ -31,8 +39,10 @@ public class ProdutoService {
         produto.setModelo(dto.getModelo());
         produto.setCor(dto.getCor());
         produto.setDescricao(dto.getDescricao());
-        produtoRepository.save(produto);
 
+        produto.setLoja(loja);
+
+        produtoRepository.save(produto);
     }
 
     public void editar(Long id, CadastroProduto dto) {
@@ -80,7 +90,16 @@ public class ProdutoService {
         produtoRepository.delete(produtoEncontrado);
     }
 
+    public Produto buscarPorId(Long id) {
+        return produtoRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Produto não encontrado."));
+    }
+
     public List<Produto> buscarPorNome(String nome) {
+        if(nome == null || nome.isBlank()) {
+            throw new RuntimeException("Informe o nome do produto.");
+        }
+
         List<Produto> produtos = produtoRepository.findByNomeContainingIgnoreCase(nome);
 
         if(produtos.isEmpty()){
@@ -88,6 +107,11 @@ public class ProdutoService {
         }
 
         return produtos;
+    }
+
+
+    public List<Produto> listarTodos() {
+        return produtoRepository.findAll();
     }
 
     private void validarProduto(CadastroProduto dto) {
@@ -106,5 +130,9 @@ public class ProdutoService {
         if(dto.getCor() == null || dto.getCor().isBlank()) {
             throw new RuntimeException("A cor é obrigatória.");
         }
+        if(dto.getLojaId() == null) {
+            throw new RuntimeException("A loja é obrigatória.");
+        }
+
     }
 }

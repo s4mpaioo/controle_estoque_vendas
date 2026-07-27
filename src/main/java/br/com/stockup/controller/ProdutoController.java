@@ -34,8 +34,18 @@ public class ProdutoController {
     }
 
     @GetMapping("/buscar")
-    public List<Produto> BuscarPorNome(@RequestParam String nome) {
+    public List<Produto> buscarPorNome(@RequestParam String nome) {
         return produtoService.buscarPorNome(nome);
+    }
+
+    @GetMapping("/{id}")
+    public Produto buscarPorId(@PathVariable Long id) {
+        return produtoService.buscarPorId(id);
+    }
+
+    @GetMapping("/listar-produtos")
+    public List<Produto> listarTodos() {
+        return produtoService.listarTodos();
     }
 }
 

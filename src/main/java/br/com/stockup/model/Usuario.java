@@ -10,7 +10,7 @@ import lombok.Setter;
 import java.time.LocalDateTime;
 import java.util.List;
 
-@Entity //cria uma tabela no banco
+@Entity
 @Table(name = "usuario")
 @Getter
 @Setter
@@ -38,6 +38,6 @@ public class Usuario {
     @Enumerated(EnumType.STRING)
     private PerfilUsuario perfil;
 
-    @OneToMany(mappedBy = "usuario") // um proprietario pode ter varias lojas
-    private List<Loja> lojas;
+    @OneToOne(mappedBy = "usuario")
+    private Loja loja;
 }

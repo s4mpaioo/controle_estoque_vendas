@@ -1,19 +1,20 @@
 package br.com.stockup.dto;
 
+import br.com.stockup.enums.Ficha;
 import br.com.stockup.enums.TipoEstoque;
 import lombok.Getter;
 import lombok.Setter;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 
 @Getter
 @Setter
 public class CadastroEstoqueProduto {
-    private String cor;
-    private String grade;
-    private Integer quantidadeTotalPares;
-    private Integer paresPorFicha;
+    private Long produtoId;
+    private TipoEstoque tipoEstoque;
+    private Ficha ficha;
     private BigDecimal precoCompra;
     private BigDecimal precoVenda;
-    private TipoEstoque tipoEstoque;
+    private LocalDate dataEntrada;
 }

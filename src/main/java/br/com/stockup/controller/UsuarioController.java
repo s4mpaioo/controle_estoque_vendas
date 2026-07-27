@@ -39,19 +39,19 @@ public class UsuarioController {
     }
 
     @PostMapping("/redefinir-senha")
-    public ResponseEntity <String> redefinirSenha(@RequestBody RedefinirSenha dto) {
+    public ResponseEntity<String> redefinirSenha(@RequestBody RedefinirSenha dto) {
         usuarioService.redefinirSenha(dto);
         return ResponseEntity.ok("O código foi enviado para seu email.");
     }
 
-    @PostMapping("validar-codigo")
-    public ResponseEntity <String> validarCodigo(@RequestBody ValidarCodigo dto) {
+    @PostMapping("/validar-codigo")
+    public ResponseEntity<String> validarCodigo(@RequestBody ValidarCodigo dto) {
         usuarioService.validarCodigo(dto);
         return ResponseEntity.ok("Código válido.");
     }
 
-    @PostMapping("nova-senha")
-    public ResponseEntity <String> novaSenha(@RequestBody NovaSenha dto) {
+    @PostMapping("/nova-senha")
+    public ResponseEntity<String> novaSenha(@RequestBody NovaSenha dto) {
         usuarioService.novaSenha(dto);
         return ResponseEntity.ok("Senha alterada com sucesso.");
     }

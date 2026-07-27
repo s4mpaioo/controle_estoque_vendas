@@ -1,5 +1,6 @@
 package br.com.stockup.model;
 
+import br.com.stockup.enums.Grade;
 import br.com.stockup.enums.TipoEstoque;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -7,6 +8,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Entity
@@ -22,7 +24,8 @@ public class EstoqueProduto {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String grade;
+    @Enumerated(EnumType.STRING)
+    private Grade grade;
 
     private Integer quantidadeTotalPares; // soma total dos pares disponíveis
 
@@ -33,6 +36,11 @@ public class EstoqueProduto {
 
     @Column(nullable = false)
     private BigDecimal precoVenda;
+
+    @Column(nullable = false)
+    private Integer estoqueMinimo = 0;
+
+    private LocalDateTime dataEntrada;
 
     @Enumerated(EnumType.STRING)
     private TipoEstoque tipoEstoque;

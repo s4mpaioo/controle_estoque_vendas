@@ -13,4 +13,6 @@ public class CadastroProduto {
     private ModeloProduto modelo;
     private String cor;
     private String descricao;
+    private Long lojaId;
+    private Integer estoqueMinimo = 0;
 }

@@ -1,5 +1,6 @@
 package br.com.stockup.model;
 import br.com.stockup.enums.FormaPagamento;
+import br.com.stockup.enums.StatusVenda;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -26,17 +27,27 @@ public class Venda {
 
     private BigDecimal valorTotal;
 
+    private BigDecimal desconto;
+
+    private BigDecimal lucro;
+
     @Enumerated(EnumType.STRING)
     private FormaPagamento formaPagamento;
+
+    @Enumerated(EnumType.STRING)
+    private StatusVenda status;
 
     @ManyToOne
     @JoinColumn(name = "loja_id", nullable = false)
     private Loja loja;
 
-    // Opcional
-    // Obrigatório apenas quando gerar dívida
     @ManyToOne
     @JoinColumn(name = "cliente_id")
     private Cliente cliente;
 
+    @OneToMany(mappedBy = "venda", cascade = CascadeType.ALL)
+    private List<ItemVendaAtacado> itensAtacado;
+
+    @OneToMany(mappedBy = "venda", cascade = CascadeType.ALL)
+    private List<ItemVendaVarejo> itensVarejo;
 }

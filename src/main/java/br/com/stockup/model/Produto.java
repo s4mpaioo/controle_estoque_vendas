@@ -28,15 +28,18 @@ public class Produto {
     private String nome;
 
     @Column(nullable = false)
+    @NotBlank(message = "A marca do produto não pode ser vazio")
     private String marca;
 
     @Column(nullable = false)
+    @NotBlank(message = "A referência do produto não pode ser vazio")
     private String referencia;
 
     @Enumerated(EnumType.STRING)
     private ModeloProduto modelo;
 
     @Column(nullable = false)
+    @NotBlank(message = "A cor do produto não pode ser vazio")
     private String cor;
 
     @Column(length = 500)

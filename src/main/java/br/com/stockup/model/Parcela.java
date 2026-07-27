@@ -14,7 +14,6 @@ import java.time.LocalDate;
 @AllArgsConstructor
 public class Parcela {
 
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;

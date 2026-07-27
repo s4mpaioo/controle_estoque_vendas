@@ -27,8 +27,8 @@ public class Loja {
     @Enumerated(EnumType.STRING)
     private TipoLoja tipo;
 
-    @ManyToOne
-    @JoinColumn(name = "usuario_id")
+    @OneToOne
+    @JoinColumn(name = "usuario_id", nullable = false)
     private Usuario usuario;
 
     @OneToMany(mappedBy = "loja")
