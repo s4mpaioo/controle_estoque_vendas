@@ -84,14 +84,25 @@ public class EstoqueProdutoService {
         estoqueProdutoRepository.save(estoqueProduto);
     }
 
-    public void validarCadastroVarejo(CadastroEstoqueVarejo dto) {
-        if(dto.getProdutoId() == null) {
+    private void validarCadastroVarejo(CadastroEstoqueVarejo dto) {
+
+        if (dto.getProdutoId() == null) {
             throw new RuntimeException("O produto é obrigatório.");
         }
-        if(!produtoRepository.existsById(dto.getProdutoId())) {
+        if (!produtoRepository.existsById(dto.getProdutoId())) {
             throw new RuntimeException("Produto não encontrado.");
         }
-        if()
+        if (dto.getPrecoCusto() == null || dto.getPrecoCusto().compareTo(BigDecimal.ZERO) <= 0) {
+
+            throw new RuntimeException("O preço de custo é obrigatório e deve ser maior que zero.");
+        }
+        if (dto.getPrecoVenda() == null || dto.getPrecoVenda().compareTo(BigDecimal.ZERO) <= 0) {
+
+            throw new RuntimeException("O preço de venda é obrigatório e deve ser maior que zero.");
+        }
+        if (dto.getPrecoVenda().compareTo(dto.getPrecoCusto()) < 0) {
+            throw new RuntimeException("O preço de venda não pode ser menor que o preço de custo.");
+        }
     }
 }
 

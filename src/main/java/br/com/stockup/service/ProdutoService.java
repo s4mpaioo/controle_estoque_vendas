@@ -2,6 +2,7 @@ package br.com.stockup.service;
 
 import br.com.stockup.dto.CadastroProduto;
 import br.com.stockup.model.EstoqueProduto;
+import br.com.stockup.model.EstoqueTamanho;
 import br.com.stockup.model.Loja;
 import br.com.stockup.model.Produto;
 import br.com.stockup.repository.LojaRepository;
@@ -81,11 +82,7 @@ public class ProdutoService {
 
         Produto produtoEncontrado = produto.get();
 
-        for (EstoqueProduto estoque : produtoEncontrado.getEstoques()) {
-            if(estoque.getQuantidadeTotalPares() != null && estoque.getQuantidadeTotalPares() > 0) {
-                    throw new RuntimeException("Não é possível excluir um produto que possui estoque cadastrado.");
-            }
-        }
+        validarProdutoSemEstoque(produtoEncontrado);
 
         produtoRepository.delete(produtoEncontrado);
     }
@@ -133,6 +130,15 @@ public class ProdutoService {
         if(dto.getLojaId() == null) {
             throw new RuntimeException("A loja é obrigatória.");
         }
+    }
 
+    private void validarProdutoSemEstoque(Produto produto) {
+        for (EstoqueProduto estoque : produto.getEstoques()) {
+            for (EstoqueTamanho tamanho : estoque.getQuantidadePorTamanho()) {
+                if (tamanho.getQuantidade() != null && tamanho.getQuantidade() > 0) {
+                    throw new RuntimeException("Não é possível excluir um produto que possui estoque cadastrado.");
+                }
+            }
+        }
     }
 }
