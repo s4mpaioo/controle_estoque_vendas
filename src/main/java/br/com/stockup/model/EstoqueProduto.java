@@ -1,5 +1,6 @@
 package br.com.stockup.model;
 
+import br.com.stockup.enums.Ficha;
 import br.com.stockup.enums.TipoEstoque;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -34,6 +35,11 @@ public class EstoqueProduto {
 
     @Enumerated(EnumType.STRING)
     private TipoEstoque tipoEstoque;
+
+    @Enumerated(EnumType.STRING)
+    private Ficha  ficha;
+
+    private Integer quantidadeFichas;
 
     @ManyToOne
     @JoinColumn(name = "produto_id")

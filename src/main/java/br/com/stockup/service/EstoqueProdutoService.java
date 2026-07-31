@@ -2,6 +2,10 @@ package br.com.stockup.service;
 
 import br.com.stockup.dto.CadastroEstoqueAtacado;
 import br.com.stockup.dto.CadastroEstoqueVarejo;
+import br.com.stockup.enums.TipoEstoque;
+import br.com.stockup.enums.TipoLoja;
+import br.com.stockup.model.EstoqueProduto;
+import br.com.stockup.model.Produto;
 import br.com.stockup.repository.EstoqueProdutoRepository;
 import br.com.stockup.repository.EstoqueTamanhoRepository;
 import br.com.stockup.repository.ProdutoRepository;
@@ -27,7 +31,18 @@ public class EstoqueProdutoService {
     public void cadastrarAtacado(CadastroEstoqueAtacado dto) {
        validarCadastroAtacado(dto);
 
+        Produto produto = produtoRepository.findById(dto.getProdutoId()).orElseThrow(() -> new RuntimeException("Produto não encontrado."));
 
+        EstoqueProduto estoqueProduto = new EstoqueProduto();
+
+        estoqueProduto.setProduto(produto);
+        estoqueProduto.setPrecoVenda(dto.getPrecoVenda());
+        estoqueProduto.setTipoEstoque(TipoEstoque.FICHA);
+        estoqueProduto.setFicha(dto.getFicha());
+        estoqueProduto.setQuantidadeFichas(dto.getQuantidadeFichas());
+        estoqueProduto.setProduto(produto);
+
+        estoqueProdutoRepository.save(estoqueProduto);
     }
 
     private void validarCadastroAtacado(CadastroEstoqueAtacado dto) {
@@ -55,7 +70,28 @@ public class EstoqueProdutoService {
     }
 
     public void cadastrarVarejo(CadastroEstoqueVarejo dto) {
+        validarCadastroVarejo(dto);
 
+        Produto produto = produtoRepository.findById(dto.getProdutoId()).orElseThrow(() -> new RuntimeException("Produto não encontrado."));
+
+        EstoqueProduto estoqueProduto = new EstoqueProduto();
+
+        estoqueProduto.setProduto(produto);
+        estoqueProduto.setPrecoVenda(dto.getPrecoVenda());
+        estoqueProduto.setPrecoCusto(dto.getPrecoCusto());
+        estoqueProduto.setTipoEstoque(TipoEstoque.PAR);
+
+        estoqueProdutoRepository.save(estoqueProduto);
+    }
+
+    public void validarCadastroVarejo(CadastroEstoqueVarejo dto) {
+        if(dto.getProdutoId() == null) {
+            throw new RuntimeException("O produto é obrigatório.");
+        }
+        if(!produtoRepository.existsById(dto.getProdutoId())) {
+            throw new RuntimeException("Produto não encontrado.");
+        }
+        if()
     }
 }
 

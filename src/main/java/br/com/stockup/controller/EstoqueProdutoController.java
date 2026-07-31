@@ -1,7 +1,7 @@
 package br.com.stockup.controller;
 
 import br.com.stockup.dto.CadastroEstoqueAtacado;
-import br.com.stockup.dto.CadastroEstoqueProduto;
+
 import br.com.stockup.model.EstoqueProduto;
 import br.com.stockup.model.Produto;
 import br.com.stockup.service.EstoqueProdutoService;
@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("estoque")
 public class EstoqueProdutoController {
 
-    private EstoqueProdutoService estoqueProdutoService;
+    private final EstoqueProdutoService estoqueProdutoService;
 
     public EstoqueProdutoController(EstoqueProdutoService estoqueProdutoService) {
         this.estoqueProdutoService = estoqueProdutoService;
@@ -28,9 +28,4 @@ public class EstoqueProdutoController {
         return ResponseEntity.ok().build();
     }
 
-    @PostMapping("/")
-    public ResponseEntity<Void> cadastrarFichaAtacado(@RequestBody CadastroEstoqueAtacado dto) {
-        estoqueProdutoService.cadastrarFichaAtacado(dto);
-        return ResponseEntity.ok().build();
-    }
 }
