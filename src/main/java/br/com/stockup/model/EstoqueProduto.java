@@ -1,6 +1,5 @@
 package br.com.stockup.model;
 
-import br.com.stockup.enums.Grade;
 import br.com.stockup.enums.TipoEstoque;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -24,23 +23,14 @@ public class EstoqueProduto {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Enumerated(EnumType.STRING)
-    private Grade grade;
-
-    private Integer quantidadeTotalPares; // soma total dos pares disponíveis
-
-    private Integer paresPorFicha;
-
     @Column(nullable = false)
-    private BigDecimal precoCompra;
+    private BigDecimal precoCusto;
 
     @Column(nullable = false)
     private BigDecimal precoVenda;
 
     @Column(nullable = false)
     private Integer estoqueMinimo = 0;
-
-    private LocalDateTime dataEntrada;
 
     @Enumerated(EnumType.STRING)
     private TipoEstoque tipoEstoque;
@@ -50,5 +40,5 @@ public class EstoqueProduto {
     private Produto produto;
 
     @OneToMany(mappedBy = "estoqueProduto", cascade = CascadeType.ALL)
-    private List<TamanhoEstoque> tamanhos;
+    private List<EstoqueTamanho> quantidadePorTamanho;
 }
