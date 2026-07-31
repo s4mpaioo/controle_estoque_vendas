@@ -7,6 +7,7 @@ public enum Ficha {
     F12(12),
     F15(15),
     F18(18),
+    F20(20),
     F24(24);
 
     private final Integer quantidadePares;

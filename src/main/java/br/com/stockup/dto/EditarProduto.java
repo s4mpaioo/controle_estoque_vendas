@@ -1,6 +1,6 @@
 package br.com.stockup.dto;
 
-public class EditarEstoqueProduto {
+public class EditarProduto {
     private String nome;
     private String referencia;
     private String descricao;

@@ -25,5 +25,8 @@ public class CadastroEstoqueVarejo {
     @Min(0)
     private Integer estoqueMinimo;
 
+    @NotNull
+    private Long produtoId;
+
     private List<CadastroEstoqueTamanho> quantidadePorTamanho;
 }
