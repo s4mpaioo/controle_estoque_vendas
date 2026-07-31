@@ -1,28 +1,61 @@
 package br.com.stockup.service;
 
-import br.com.stockup.dto.CadastroEstoqueProduto;
+import br.com.stockup.dto.CadastroEstoqueAtacado;
+import br.com.stockup.dto.CadastroEstoqueVarejo;
+import br.com.stockup.repository.EstoqueProdutoRepository;
+import br.com.stockup.repository.EstoqueTamanhoRepository;
+import br.com.stockup.repository.ProdutoRepository;
+import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
+
+@Service
 public class EstoqueProdutoService {
 
-    private void validarEstoque(CadastroEstoqueProduto dto) {
-        if (dto.getEstoqueMinimo() == null) {
-            throw new RuntimeException("O estoque mínimo é obrigatório.");
-        }
+    private final EstoqueProdutoRepository estoqueProdutoRepository;
+    private final EstoqueTamanhoRepository estoqueTamanhoRepository;
+    private final ProdutoRepository produtoRepository;
 
-        if (dto.getPrecoCompra() == null) {
-            throw new RuntimeException("O preço de compra é obrigatório.");
-        }
+    public EstoqueProdutoService(EstoqueProdutoRepository estoqueProdutoRepository,
+                                 EstoqueTamanhoRepository estoqueTamanhoRepository,
+                                 ProdutoRepository produtoRepository) {
+        this.estoqueProdutoRepository = estoqueProdutoRepository;
+        this.estoqueTamanhoRepository = estoqueTamanhoRepository;
+        this.produtoRepository = produtoRepository;
+    }
 
-        if (dto.getPrecoVenda() == null) {
-            throw new RuntimeException("O preço de venda é obrigatório.");
-        }
+    public void cadastrarAtacado(CadastroEstoqueAtacado dto) {
+       validarCadastroAtacado(dto);
 
-        if (dto.getTipoEstoque() == null) {
-            throw new RuntimeException("O tipo de estoque é obrigatório.");
-        }
 
-        if (dto.getGrade() == null) {
-            throw new RuntimeException("A grade é obrigatória.");
+    }
+
+    private void validarCadastroAtacado(CadastroEstoqueAtacado dto) {
+        if(dto.getProdutoId() == null) {
+            throw new RuntimeException("O produto é obrigatório.");
+        }
+        if(!produtoRepository.existsById(dto.getProdutoId())) {
+            throw new RuntimeException("Produto não encontrado.");
+        }
+        if(dto.getFicha() == null) {
+            throw new RuntimeException("Ficha é obrigatória.");
+        }
+        if(dto.getQuantidadeFichas() == null || dto.getQuantidadeFichas() <= 0) {
+            throw new RuntimeException("A quantidade de fichas é obrigatória, e deve ser maior que zero.");
+        }
+        if(dto.getPrecoCusto() == null || dto.getPrecoCusto().compareTo(BigDecimal.ZERO) <= 0) {
+            throw new RuntimeException("Preço de custo é obrigatório, e deve ser maior que zero.");
+        }
+        if(dto.getPrecoVenda() == null || dto.getPrecoVenda().compareTo(BigDecimal.ZERO) <= 0) {
+            throw new RuntimeException("Preço de venda é obrigatório, e deve ser maior que zero.");
+        }
+        if(dto.getPrecoVenda().compareTo(dto.getPrecoCusto()) < 0) {
+            throw new RuntimeException("Preço de venda não pode ser menor que o preço de custo.");
         }
     }
+
+    public void cadastrarVarejo(CadastroEstoqueVarejo dto) {
+
+    }
 }
+
