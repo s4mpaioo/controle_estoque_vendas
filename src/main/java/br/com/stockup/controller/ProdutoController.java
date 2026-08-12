@@ -19,13 +19,13 @@ public class ProdutoController {
     }
 
     @PostMapping("/cadastro")
-    public void cadastrar(@RequestBody CadastroProduto dto) {
-        produtoService.cadastrarProduto(dto);
+    public void cadastrar(@RequestBody CadastroProduto cadastroProduto) {
+        produtoService.cadastrarProduto(cadastroProduto);
     }
 
     @PutMapping("/{id}")
-    public void editar(@PathVariable Long id, @RequestBody CadastroProduto dto) {
-        produtoService.editar(id, dto);
+    public void editar(@PathVariable Long id, @RequestBody CadastroProduto cadastroProduto) {
+        produtoService.editar(id, cadastroProduto);
     }
 
     @DeleteMapping("/{id}")

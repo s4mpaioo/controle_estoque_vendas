@@ -59,8 +59,7 @@ public class ProdutoService {
 
         Optional<Produto> produtoReferencia = produtoRepository.findByReferenciaAndCor(dto.getReferencia(), dto.getCor());
 
-        if (produtoReferencia.isPresent()
-                && !produtoReferencia.get().getId().equals(id)) {
+        if (produtoReferencia.isPresent() && !produtoReferencia.get().getId().equals(id)) {
             throw new RuntimeException("Já existe um produto com esta referência e cor.");
         }
 
@@ -105,7 +104,6 @@ public class ProdutoService {
 
         return produtos;
     }
-
 
     public List<Produto> listarTodos() {
         return produtoRepository.findAll();

@@ -22,13 +22,13 @@ public class UsuarioController {
     }
 
     @PostMapping("/cadastro")
-    public void cadastrar(@RequestBody CadastroUsuario dto) {
-        usuarioService.cadastrar(dto);
+    public void cadastrar(@RequestBody CadastroUsuario cadastroUsuario) {
+        usuarioService.cadastrar(cadastroUsuario);
     }
 
     @PostMapping("/login")
-    public ResponseEntity<LoginResponse> login(@RequestBody LoginUsuario dto) {
-        LoginResponse response = usuarioService.login(dto);
+    public ResponseEntity<LoginResponse> login(@RequestBody LoginUsuario loginUsuario) {
+        LoginResponse response = usuarioService.login(loginUsuario);
         return ResponseEntity.ok(response);
     }
 
@@ -39,20 +39,20 @@ public class UsuarioController {
     }
 
     @PostMapping("/redefinir-senha")
-    public ResponseEntity<String> redefinirSenha(@RequestBody RedefinirSenha dto) {
-        usuarioService.redefinirSenha(dto);
+    public ResponseEntity<String> redefinirSenha(@RequestBody RedefinirSenha redefinirSenha) {
+        usuarioService.redefinirSenha(redefinirSenha);
         return ResponseEntity.ok("O código foi enviado para seu email.");
     }
 
     @PostMapping("/validar-codigo")
-    public ResponseEntity<String> validarCodigo(@RequestBody ValidarCodigo dto) {
-        usuarioService.validarCodigo(dto);
+    public ResponseEntity<String> validarCodigo(@RequestBody ValidarCodigo validarCodigo) {
+        usuarioService.validarCodigo(validarCodigo);
         return ResponseEntity.ok("Código válido.");
     }
 
     @PostMapping("/nova-senha")
-    public ResponseEntity<String> novaSenha(@RequestBody NovaSenha dto) {
-        usuarioService.novaSenha(dto);
+    public ResponseEntity<String> novaSenha(@RequestBody NovaSenha novaSenha) {
+        usuarioService.novaSenha(novaSenha);
         return ResponseEntity.ok("Senha alterada com sucesso.");
     }
 }

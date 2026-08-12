@@ -28,79 +28,76 @@ public class EstoqueProdutoService {
         this.produtoRepository = produtoRepository;
     }
 
-    public void cadastrarAtacado(CadastroEstoqueAtacado dto) {
-       validarCadastroAtacado(dto);
+    public void cadastrarAtacado(CadastroEstoqueAtacado cadastroEstoqueAtacadoDto) {
+        validarCadastroAtacado(cadastroEstoqueAtacadoDto);
 
-        Produto produto = produtoRepository.findById(dto.getProdutoId()).orElseThrow(() -> new RuntimeException("Produto não encontrado."));
+        Produto produto = produtoRepository.findById(cadastroEstoqueAtacadoDto.getProdutoId()).orElseThrow(() -> new RuntimeException("Produto não encontrado."));
 
         EstoqueProduto estoqueProduto = new EstoqueProduto();
 
         estoqueProduto.setProduto(produto);
-        estoqueProduto.setPrecoVenda(dto.getPrecoVenda());
+        estoqueProduto.setPrecoVenda(cadastroEstoqueAtacadoDto.getPrecoVenda());
+        estoqueProduto.setPrecoCusto(cadastroEstoqueAtacadoDto.getPrecoCusto());
         estoqueProduto.setTipoEstoque(TipoEstoque.FICHA);
-        estoqueProduto.setFicha(dto.getFicha());
-        estoqueProduto.setQuantidadeFichas(dto.getQuantidadeFichas());
-        estoqueProduto.setProduto(produto);
+        estoqueProduto.setFicha(cadastroEstoqueAtacadoDto.getFicha());
+        estoqueProduto.setQuantidadeFichas(cadastroEstoqueAtacadoDto.getQuantidadeFichas());
 
         estoqueProdutoRepository.save(estoqueProduto);
     }
 
-    private void validarCadastroAtacado(CadastroEstoqueAtacado dto) {
-        if(dto.getProdutoId() == null) {
+    private void validarCadastroAtacado(CadastroEstoqueAtacado cadastroEstoqueAtacadoDto) {
+        if(cadastroEstoqueAtacadoDto.getProdutoId() == null) {
             throw new RuntimeException("O produto é obrigatório.");
         }
-        if(!produtoRepository.existsById(dto.getProdutoId())) {
+        if(!produtoRepository.existsById(cadastroEstoqueAtacadoDto.getProdutoId())) {
             throw new RuntimeException("Produto não encontrado.");
         }
-        if(dto.getFicha() == null) {
+        if(cadastroEstoqueAtacadoDto.getFicha() == null) {
             throw new RuntimeException("Ficha é obrigatória.");
         }
-        if(dto.getQuantidadeFichas() == null || dto.getQuantidadeFichas() <= 0) {
+        if(cadastroEstoqueAtacadoDto.getQuantidadeFichas() == null || cadastroEstoqueAtacadoDto.getQuantidadeFichas() <= 0) {
             throw new RuntimeException("A quantidade de fichas é obrigatória, e deve ser maior que zero.");
         }
-        if(dto.getPrecoCusto() == null || dto.getPrecoCusto().compareTo(BigDecimal.ZERO) <= 0) {
+        if(cadastroEstoqueAtacadoDto.getPrecoCusto() == null || cadastroEstoqueAtacadoDto.getPrecoCusto().compareTo(BigDecimal.ZERO) <= 0) {
             throw new RuntimeException("Preço de custo é obrigatório, e deve ser maior que zero.");
         }
-        if(dto.getPrecoVenda() == null || dto.getPrecoVenda().compareTo(BigDecimal.ZERO) <= 0) {
+        if(cadastroEstoqueAtacadoDto.getPrecoVenda() == null || cadastroEstoqueAtacadoDto.getPrecoVenda().compareTo(BigDecimal.ZERO) <= 0) {
             throw new RuntimeException("Preço de venda é obrigatório, e deve ser maior que zero.");
         }
-        if(dto.getPrecoVenda().compareTo(dto.getPrecoCusto()) < 0) {
+        if(cadastroEstoqueAtacadoDto.getPrecoVenda().compareTo(cadastroEstoqueAtacadoDto.getPrecoCusto()) < 0) {
             throw new RuntimeException("Preço de venda não pode ser menor que o preço de custo.");
         }
     }
 
-    public void cadastrarVarejo(CadastroEstoqueVarejo dto) {
-        validarCadastroVarejo(dto);
+    public void cadastrarVarejo(CadastroEstoqueVarejo cadastroEstoqueVarejoDto) {
+        validarCadastroVarejo(cadastroEstoqueVarejoDto);
 
-        Produto produto = produtoRepository.findById(dto.getProdutoId()).orElseThrow(() -> new RuntimeException("Produto não encontrado."));
+        Produto produto = produtoRepository.findById(cadastroEstoqueVarejoDto.getProdutoId()).orElseThrow(() -> new RuntimeException("Produto não encontrado."));
 
         EstoqueProduto estoqueProduto = new EstoqueProduto();
 
         estoqueProduto.setProduto(produto);
-        estoqueProduto.setPrecoVenda(dto.getPrecoVenda());
-        estoqueProduto.setPrecoCusto(dto.getPrecoCusto());
+        estoqueProduto.setPrecoVenda(cadastroEstoqueVarejoDto.getPrecoVenda());
+        estoqueProduto.setPrecoCusto(cadastroEstoqueVarejoDto.getPrecoCusto());
         estoqueProduto.setTipoEstoque(TipoEstoque.PAR);
 
         estoqueProdutoRepository.save(estoqueProduto);
     }
 
-    private void validarCadastroVarejo(CadastroEstoqueVarejo dto) {
-
-        if (dto.getProdutoId() == null) {
+    private void validarCadastroVarejo(CadastroEstoqueVarejo cadastroEstoqueVarejoDto) {
+        if (cadastroEstoqueVarejoDto.getProdutoId() == null) {
             throw new RuntimeException("O produto é obrigatório.");
         }
-        if (!produtoRepository.existsById(dto.getProdutoId())) {
+        if (!produtoRepository.existsById(cadastroEstoqueVarejoDto.getProdutoId())) {
             throw new RuntimeException("Produto não encontrado.");
         }
-        if (dto.getPrecoCusto() == null || dto.getPrecoCusto().compareTo(BigDecimal.ZERO) <= 0) {
-
+        if (cadastroEstoqueVarejoDto.getPrecoCusto() == null || cadastroEstoqueVarejoDto.getPrecoCusto().compareTo(BigDecimal.ZERO) <= 0) {
             throw new RuntimeException("O preço de custo é obrigatório e deve ser maior que zero.");
         }
-        if (dto.getPrecoVenda() == null || dto.getPrecoVenda().compareTo(BigDecimal.ZERO) <= 0) {
-
+        if (cadastroEstoqueVarejoDto.getPrecoVenda() == null || cadastroEstoqueVarejoDto.getPrecoVenda().compareTo(BigDecimal.ZERO) <= 0) {
             throw new RuntimeException("O preço de venda é obrigatório e deve ser maior que zero.");
         }
-        if (dto.getPrecoVenda().compareTo(dto.getPrecoCusto()) < 0) {
+        if (cadastroEstoqueVarejoDto.getPrecoVenda().compareTo(cadastroEstoqueVarejoDto.getPrecoCusto()) < 0) {
             throw new RuntimeException("O preço de venda não pode ser menor que o preço de custo.");
         }
     }

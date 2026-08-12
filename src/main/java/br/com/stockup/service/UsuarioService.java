@@ -6,7 +6,6 @@ import br.com.stockup.model.Loja;
 import br.com.stockup.model.Usuario;
 import br.com.stockup.repository.LojaRepository;
 import br.com.stockup.repository.UsuarioRepository;
-//import br.com.stockup.security.JwtTokenProvider;
 import org.springframework.stereotype.Service;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import java.util.Random;
@@ -21,7 +20,6 @@ public class UsuarioService {
     private final LojaRepository lojaRepository;
     private final EmailService emailService;
 
-    //para o spring entregar os repositories
     public UsuarioService(UsuarioRepository usuarioRepository, LojaRepository lojaRepository, EmailService emailService, PasswordEncoder passwordEncoder) {
         this.usuarioRepository = usuarioRepository;
         this.lojaRepository = lojaRepository;
