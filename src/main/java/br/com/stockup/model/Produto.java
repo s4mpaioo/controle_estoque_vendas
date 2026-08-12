@@ -8,6 +8,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -18,7 +19,6 @@ import java.util.List;
 @AllArgsConstructor
 
 public class Produto {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -50,5 +50,5 @@ public class Produto {
     private Loja loja;
 
     @OneToMany(mappedBy = "produto", cascade = CascadeType.ALL)
-    private List<EstoqueProduto> estoques;
+    private List<EstoqueProduto> estoques = new ArrayList<>();
 }

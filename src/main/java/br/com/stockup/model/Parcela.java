@@ -13,17 +13,20 @@ import java.time.LocalDate;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Parcela {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(nullable = false)
     private Integer numero;
 
+    @Column(nullable = false)
     private BigDecimal valor;
 
+    @Column(nullable = false)
     private LocalDate dataVencimento;
 
+    @Column(nullable = false)
     private Boolean paga;
 
     private LocalDate dataPagamento;
@@ -31,5 +34,4 @@ public class Parcela {
     @ManyToOne
     @JoinColumn(name = "divida_id")
     private Divida divida;
-
 }

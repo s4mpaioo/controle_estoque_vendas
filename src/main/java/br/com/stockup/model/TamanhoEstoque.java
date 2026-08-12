@@ -15,7 +15,6 @@ import lombok.Setter;
 @AllArgsConstructor
 
 public class TamanhoEstoque {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;

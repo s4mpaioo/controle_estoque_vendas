@@ -17,7 +17,6 @@ import java.util.List;
 @AllArgsConstructor
 
 public class Loja {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
