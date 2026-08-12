@@ -15,15 +15,17 @@ import java.math.BigDecimal;
 @AllArgsConstructor
 
 public class ItemVendaAtacado {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(nullable = false)
     private Integer quantidadeFichas;
 
+    @Column(nullable = false)
     private BigDecimal valorFicha;
 
+    @Column(nullable = false)
     private BigDecimal subtotal;
 
     @ManyToOne
@@ -33,5 +35,4 @@ public class ItemVendaAtacado {
     @ManyToOne
     @JoinColumn(name = "estoque_produto_id", nullable = false)
     private EstoqueProduto estoqueProduto;
-
 }
