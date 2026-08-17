@@ -1,8 +1,8 @@
 package br.com.stockup.dto;
 
 import br.com.stockup.enums.Tamanho;
-import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.PositiveOrZero;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -14,6 +14,6 @@ public class CadastroEstoqueTamanhoDTO {
     private Tamanho tamanho;
 
     @NotNull
-    @Min(0)
+    @PositiveOrZero
     private Integer quantidade;
 }

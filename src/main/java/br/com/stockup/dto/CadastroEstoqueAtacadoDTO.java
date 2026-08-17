@@ -3,6 +3,7 @@ package br.com.stockup.dto;
 import br.com.stockup.enums.Ficha;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Positive;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -18,12 +19,14 @@ public class CadastroEstoqueAtacadoDTO {
     private Ficha ficha;
 
     @NotNull
-    @Min(0)
+    @Positive
     private Integer quantidadeFichas;
 
     @NotNull
+    @Positive
     private BigDecimal precoCusto;
 
     @NotNull
+    @Positive
     private BigDecimal precoVenda;
 }

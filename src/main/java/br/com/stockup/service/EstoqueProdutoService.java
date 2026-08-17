@@ -11,7 +11,6 @@ import br.com.stockup.repository.EstoqueTamanhoRepository;
 import br.com.stockup.repository.ProdutoRepository;
 import org.springframework.stereotype.Service;
 
-import java.math.BigDecimal;
 import java.util.List;
 
 @Service
@@ -47,23 +46,8 @@ public class EstoqueProdutoService {
     }
 
     private void validarCadastroAtacado(CadastroEstoqueAtacadoDTO cadastroEstoqueAtacadoDto) {
-        if(cadastroEstoqueAtacadoDto.getProdutoId() == null) {
-            throw new RuntimeException("O produto é obrigatório.");
-        }
         if(!produtoRepository.existsById(cadastroEstoqueAtacadoDto.getProdutoId())) {
             throw new RuntimeException("Produto não encontrado.");
-        }
-        if(cadastroEstoqueAtacadoDto.getFicha() == null) {
-            throw new RuntimeException("Ficha é obrigatória.");
-        }
-        if(cadastroEstoqueAtacadoDto.getQuantidadeFichas() == null || cadastroEstoqueAtacadoDto.getQuantidadeFichas() <= 0) {
-            throw new RuntimeException("A quantidade de fichas é obrigatória, e deve ser maior que zero.");
-        }
-        if(cadastroEstoqueAtacadoDto.getPrecoCusto() == null || cadastroEstoqueAtacadoDto.getPrecoCusto().compareTo(BigDecimal.ZERO) <= 0) {
-            throw new RuntimeException("Preço de custo é obrigatório, e deve ser maior que zero.");
-        }
-        if(cadastroEstoqueAtacadoDto.getPrecoVenda() == null || cadastroEstoqueAtacadoDto.getPrecoVenda().compareTo(BigDecimal.ZERO) <= 0) {
-            throw new RuntimeException("Preço de venda é obrigatório, e deve ser maior que zero.");
         }
         if(cadastroEstoqueAtacadoDto.getPrecoVenda().compareTo(cadastroEstoqueAtacadoDto.getPrecoCusto()) <= 0) {
             throw new RuntimeException("Preço de venda não pode ser menor ou igual ao preço de custo.");
@@ -86,49 +70,27 @@ public class EstoqueProdutoService {
     }
 
     private void validarCadastroVarejo(CadastroEstoqueVarejoDTO cadastroEstoqueVarejoDto) {
-        if (cadastroEstoqueVarejoDto.getProdutoId() == null) {
-            throw new RuntimeException("O produto é obrigatório.");
-        }
         if (!produtoRepository.existsById(cadastroEstoqueVarejoDto.getProdutoId())) {
             throw new RuntimeException("Produto não encontrado.");
-        }
-        if (cadastroEstoqueVarejoDto.getPrecoCusto() == null || cadastroEstoqueVarejoDto.getPrecoCusto().compareTo(BigDecimal.ZERO) <= 0) {
-            throw new RuntimeException("O preço de custo é obrigatório e deve ser maior que zero.");
-        }
-        if (cadastroEstoqueVarejoDto.getPrecoVenda() == null || cadastroEstoqueVarejoDto.getPrecoVenda().compareTo(BigDecimal.ZERO) <= 0) {
-            throw new RuntimeException("O preço de venda é obrigatório e deve ser maior que zero.");
         }
         if (cadastroEstoqueVarejoDto.getPrecoVenda().compareTo(cadastroEstoqueVarejoDto.getPrecoCusto()) <= 0) {
             throw new RuntimeException("O preço de venda não pode ser menor ou igual ao preço de custo.");
         }
 
-        validarTamanhos(cadastroEstoqueVarejoDto.getQuantidadePorTamanho());
-
         validarQuantidadeTamanho(cadastroEstoqueVarejoDto.getQuantidadePorTamanho());
     }
 
-    private void validarTamanhos(List<CadastroEstoqueTamanhoDTO> tamanhosDto) {
-        if(tamanhosDto == null || tamanhosDto.isEmpty()) {
-            throw new RuntimeException("Informe um tamanho.");
-        }
-        for(int i = 0; i < tamanhosDto.size(); i++) {
-            CadastroEstoqueTamanhoDTO tamanho = tamanhosDto.get(i);
-            if(tamanho.getTamanho() == null) {
-                throw new RuntimeException("O tamanho é obrigatório.");
-            }
-        }
-    }
-
     private void validarQuantidadeTamanho(List<CadastroEstoqueTamanhoDTO> tamanhosDto) {
-        if(tamanhosDto == null || tamanhosDto.isEmpty()) {
-            throw new RuntimeException("Informe uma quantidade.");
-        }
+        boolean possuiQuantidade = false;
+
         for (int i = 0; i < tamanhosDto.size(); i++) {
             CadastroEstoqueTamanhoDTO tamanho = tamanhosDto.get(i);
-
-            if(tamanho.getQuantidade() == null || tamanho.getQuantidade() < 0){
-                throw new RuntimeException("A quantidade deve ser informada e não pode ser negativa.");
+            if(tamanho.getQuantidade() > 0) {
+                possuiQuantidade = true;
             }
+        }
+        if(!possuiQuantidade){
+            throw new RuntimeException("Informe pelo menos um tamanho.");
         }
     }
 }
