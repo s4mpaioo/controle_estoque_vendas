@@ -29,7 +29,7 @@ public class UsuarioService {
     /*o que a service faz
     * o metodo cadastrar tem que receber o formulario que são as informações do front
     * */
-    public void cadastrar(CadastroUsuario dto) {
+    public void cadastrar(CadastroUsuarioDTO dto) {
         if(usuarioRepository.existsByEmail(dto.getEmail())){
             throw new RuntimeException("Email já cadastrado");
         }
@@ -51,7 +51,7 @@ public class UsuarioService {
         lojaRepository.save(loja);
     }
 
-    public LoginResponse login(LoginUsuario dto) {
+    public LoginResponseDTO login(LoginUsuarioDTO dto) {
 
         Optional<Usuario> usuario = usuarioRepository.findByEmail(dto.getEmail());
 
@@ -65,15 +65,15 @@ public class UsuarioService {
             throw new RuntimeException("Email ou senha inválidos.");
         }
 
-        LoginResponse loginResponse = new LoginResponse();
-        loginResponse.setId(usuarioEncontrado.getId());
-        loginResponse.setNome(usuarioEncontrado.getNome());
-        loginResponse.setEmail(usuarioEncontrado.getEmail());
+        LoginResponseDTO loginResponseDTO = new LoginResponseDTO();
+        loginResponseDTO.setId(usuarioEncontrado.getId());
+        loginResponseDTO.setNome(usuarioEncontrado.getNome());
+        loginResponseDTO.setEmail(usuarioEncontrado.getEmail());
 
-        return loginResponse;
+        return loginResponseDTO;
     }
 
-    public void redefinirSenha(RedefinirSenha dto) {
+    public void redefinirSenha(RedefinirSenhaDTO dto) {
         Optional <Usuario> usuario = usuarioRepository.findByEmail(dto.getEmail());
         if(usuario.isEmpty()) {
             throw new RuntimeException("Email não encontrado.");
@@ -91,7 +91,7 @@ public class UsuarioService {
         emailService.enviarCodigoRecuperacao(usuarioEncontrado.getEmail(), usuarioEncontrado.getCodigoRecuperacao());
     }
 
-    public void validarCodigo(ValidarCodigo dto) {
+    public void validarCodigo(ValidarCodigoDTO dto) {
         Optional<Usuario> usuario = usuarioRepository.findByEmail(dto.getEmail());
         if (usuario.isEmpty()) {
             throw new RuntimeException("Email não encontrado.");
@@ -115,7 +115,7 @@ public class UsuarioService {
         }
     }
 
-    public void novaSenha(NovaSenha dto) {
+    public void novaSenha(NovaSenhaDTO dto) {
         Optional<Usuario> usuario = usuarioRepository.findByEmail(dto.getEmail());
         if (usuario.isEmpty()) {
             throw new RuntimeException("Email não encontrado.");

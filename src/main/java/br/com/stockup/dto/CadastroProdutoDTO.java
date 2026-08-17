@@ -6,7 +6,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class CadastroProduto {
+public class CadastroProdutoDTO {
     private String referencia;
     private String nome;
     private String marca;

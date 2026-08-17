@@ -8,7 +8,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class CadastroEstoqueTamanho {
+public class CadastroEstoqueTamanhoDTO {
 
     @NotNull
     private Tamanho tamanho;

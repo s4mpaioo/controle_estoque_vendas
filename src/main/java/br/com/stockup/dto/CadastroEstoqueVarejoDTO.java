@@ -10,7 +10,7 @@ import java.util.List;
 
 @Getter
 @Setter
-public class CadastroEstoqueVarejo {
+public class CadastroEstoqueVarejoDTO {
 
     @NotNull
     private Long Id;
@@ -28,5 +28,5 @@ public class CadastroEstoqueVarejo {
     @NotNull
     private Long produtoId;
 
-    private List<CadastroEstoqueTamanho> quantidadePorTamanho;
+    private List<CadastroEstoqueTamanhoDTO> quantidadePorTamanho;
 }

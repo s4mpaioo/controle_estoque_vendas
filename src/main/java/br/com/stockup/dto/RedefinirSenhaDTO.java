@@ -5,6 +5,6 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class RedefinirSenha {
+public class RedefinirSenhaDTO {
     private String email;
 }

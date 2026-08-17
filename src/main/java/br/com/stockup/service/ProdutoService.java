@@ -1,6 +1,6 @@
 package br.com.stockup.service;
 
-import br.com.stockup.dto.CadastroProduto;
+import br.com.stockup.dto.CadastroProdutoDTO;
 import br.com.stockup.model.EstoqueProduto;
 import br.com.stockup.model.EstoqueTamanho;
 import br.com.stockup.model.Loja;
@@ -23,7 +23,7 @@ public class ProdutoService {
         this.lojaRepository = lojaRepository;
     }
 
-    public void cadastrarProduto(CadastroProduto dto) {
+    public void cadastrarProduto(CadastroProdutoDTO dto) {
         validarProduto(dto);
 
         Loja loja = lojaRepository.findById(dto.getLojaId())
@@ -46,7 +46,7 @@ public class ProdutoService {
         produtoRepository.save(produto);
     }
 
-    public void editar(Long id, CadastroProduto dto) {
+    public void editar(Long id, CadastroProdutoDTO dto) {
         validarProduto(dto);
 
         Optional<Produto> produto = produtoRepository.findById(id);
@@ -109,7 +109,7 @@ public class ProdutoService {
         return produtoRepository.findAll();
     }
 
-    private void validarProduto(CadastroProduto dto) {
+    private void validarProduto(CadastroProdutoDTO dto) {
         if (dto.getNome() == null || dto.getNome().isBlank()) {
             throw new RuntimeException("O nome é obrigatório.");
         }

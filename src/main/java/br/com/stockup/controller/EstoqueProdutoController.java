@@ -1,8 +1,8 @@
 package br.com.stockup.controller;
 
-import br.com.stockup.dto.CadastroEstoqueAtacado;
+import br.com.stockup.dto.CadastroEstoqueAtacadoDTO;
 
-import br.com.stockup.dto.CadastroEstoqueVarejo;
+import br.com.stockup.dto.CadastroEstoqueVarejoDTO;
 
 import br.com.stockup.service.EstoqueProdutoService;
 import org.springframework.http.ResponseEntity;
@@ -22,14 +22,14 @@ public class EstoqueProdutoController {
     }
 
     @PostMapping("/atacado")
-    public ResponseEntity<Void> cadastrarAtacado(@RequestBody CadastroEstoqueAtacado cadastroEstoqueAtacado) {
-        estoqueProdutoService.cadastrarAtacado(cadastroEstoqueAtacado);
+    public ResponseEntity<Void> cadastrarAtacado(@RequestBody CadastroEstoqueAtacadoDTO cadastroEstoqueAtacadoDTO) {
+        estoqueProdutoService.cadastrarAtacado(cadastroEstoqueAtacadoDTO);
         return ResponseEntity.ok().build();
     }
 
     @PostMapping("/varejo")
-    public ResponseEntity<Void> cadastrarVarejo(@RequestBody CadastroEstoqueVarejo cadastroEstoqueVarejo) {
-        estoqueProdutoService.cadastrarVarejo(cadastroEstoqueVarejo);
+    public ResponseEntity<Void> cadastrarVarejo(@RequestBody CadastroEstoqueVarejoDTO cadastroEstoqueVarejoDTO) {
+        estoqueProdutoService.cadastrarVarejo(cadastroEstoqueVarejoDTO);
         return ResponseEntity.ok().build();
     }
 }

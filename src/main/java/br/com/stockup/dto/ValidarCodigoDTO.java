@@ -5,7 +5,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class ValidarCodigo {
+public class ValidarCodigoDTO {
     private String email;
     private String codigo;
 }

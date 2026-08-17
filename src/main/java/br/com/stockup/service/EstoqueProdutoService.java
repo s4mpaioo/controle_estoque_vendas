@@ -1,8 +1,8 @@
 package br.com.stockup.service;
 
-import br.com.stockup.dto.CadastroEstoqueAtacado;
-import br.com.stockup.dto.CadastroEstoqueTamanho;
-import br.com.stockup.dto.CadastroEstoqueVarejo;
+import br.com.stockup.dto.CadastroEstoqueAtacadoDTO;
+import br.com.stockup.dto.CadastroEstoqueTamanhoDTO;
+import br.com.stockup.dto.CadastroEstoqueVarejoDTO;
 import br.com.stockup.enums.TipoEstoque;
 import br.com.stockup.model.EstoqueProduto;
 import br.com.stockup.model.Produto;
@@ -29,7 +29,7 @@ public class EstoqueProdutoService {
         this.produtoRepository = produtoRepository;
     }
 
-    public void cadastrarAtacado(CadastroEstoqueAtacado cadastroEstoqueAtacadoDto) {
+    public void cadastrarAtacado(CadastroEstoqueAtacadoDTO cadastroEstoqueAtacadoDto) {
         validarCadastroAtacado(cadastroEstoqueAtacadoDto);
 
         Produto produto = produtoRepository.findById(cadastroEstoqueAtacadoDto.getProdutoId()).orElseThrow(() -> new RuntimeException("Produto não encontrado."));
@@ -46,7 +46,7 @@ public class EstoqueProdutoService {
         estoqueProdutoRepository.save(estoqueProduto);
     }
 
-    private void validarCadastroAtacado(CadastroEstoqueAtacado cadastroEstoqueAtacadoDto) {
+    private void validarCadastroAtacado(CadastroEstoqueAtacadoDTO cadastroEstoqueAtacadoDto) {
         if(cadastroEstoqueAtacadoDto.getProdutoId() == null) {
             throw new RuntimeException("O produto é obrigatório.");
         }
@@ -70,7 +70,7 @@ public class EstoqueProdutoService {
         }
     }
 
-    public void cadastrarVarejo(CadastroEstoqueVarejo cadastroEstoqueVarejoDto) {
+    public void cadastrarVarejo(CadastroEstoqueVarejoDTO cadastroEstoqueVarejoDto) {
         validarCadastroVarejo(cadastroEstoqueVarejoDto);
 
         Produto produto = produtoRepository.findById(cadastroEstoqueVarejoDto.getProdutoId()).orElseThrow(() -> new RuntimeException("Produto não encontrado."));
@@ -85,7 +85,7 @@ public class EstoqueProdutoService {
         estoqueProdutoRepository.save(estoqueProduto);
     }
 
-    private void validarCadastroVarejo(CadastroEstoqueVarejo cadastroEstoqueVarejoDto) {
+    private void validarCadastroVarejo(CadastroEstoqueVarejoDTO cadastroEstoqueVarejoDto) {
         if (cadastroEstoqueVarejoDto.getProdutoId() == null) {
             throw new RuntimeException("O produto é obrigatório.");
         }
@@ -107,24 +107,24 @@ public class EstoqueProdutoService {
         validarQuantidadeTamanho(cadastroEstoqueVarejoDto.getQuantidadePorTamanho());
     }
 
-    private void validarTamanhos(List<CadastroEstoqueTamanho> tamanhosDto) {
+    private void validarTamanhos(List<CadastroEstoqueTamanhoDTO> tamanhosDto) {
         if(tamanhosDto == null || tamanhosDto.isEmpty()) {
             throw new RuntimeException("Informe um tamanho.");
         }
         for(int i = 0; i < tamanhosDto.size(); i++) {
-            CadastroEstoqueTamanho tamanho = tamanhosDto.get(i);
+            CadastroEstoqueTamanhoDTO tamanho = tamanhosDto.get(i);
             if(tamanho.getTamanho() == null) {
                 throw new RuntimeException("O tamanho é obrigatório.");
             }
         }
     }
 
-    private void validarQuantidadeTamanho(List<CadastroEstoqueTamanho> tamanhosDto) {
+    private void validarQuantidadeTamanho(List<CadastroEstoqueTamanhoDTO> tamanhosDto) {
         if(tamanhosDto == null || tamanhosDto.isEmpty()) {
             throw new RuntimeException("Informe uma quantidade.");
         }
         for (int i = 0; i < tamanhosDto.size(); i++) {
-            CadastroEstoqueTamanho tamanho = tamanhosDto.get(i);
+            CadastroEstoqueTamanhoDTO tamanho = tamanhosDto.get(i);
 
             if(tamanho.getQuantidade() == null || tamanho.getQuantidade() < 0){
                 throw new RuntimeException("A quantidade deve ser informada e não pode ser negativa.");

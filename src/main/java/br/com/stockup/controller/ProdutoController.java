@@ -1,9 +1,8 @@
 package br.com.stockup.controller;
 
-import br.com.stockup.dto.CadastroProduto;
+import br.com.stockup.dto.CadastroProdutoDTO;
 import br.com.stockup.model.Produto;
 import br.com.stockup.service.ProdutoService;
-import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -19,13 +18,13 @@ public class ProdutoController {
     }
 
     @PostMapping("/cadastro")
-    public void cadastrar(@RequestBody CadastroProduto cadastroProduto) {
-        produtoService.cadastrarProduto(cadastroProduto);
+    public void cadastrar(@RequestBody CadastroProdutoDTO cadastroProdutoDTO) {
+        produtoService.cadastrarProduto(cadastroProdutoDTO);
     }
 
     @PutMapping("/{id}")
-    public void editar(@PathVariable Long id, @RequestBody CadastroProduto cadastroProduto) {
-        produtoService.editar(id, cadastroProduto);
+    public void editar(@PathVariable Long id, @RequestBody CadastroProdutoDTO cadastroProdutoDTO) {
+        produtoService.editar(id, cadastroProdutoDTO);
     }
 
     @DeleteMapping("/{id}")
