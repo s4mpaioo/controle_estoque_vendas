@@ -42,6 +42,9 @@ public class Produto {
     @NotBlank(message = "A cor do produto não pode ser vazio")
     private String cor;
 
+    @Column(nullable = false)
+    private Integer estoqueMinimo = 0;
+
     @Column(length = 500)
     private String descricao;
 

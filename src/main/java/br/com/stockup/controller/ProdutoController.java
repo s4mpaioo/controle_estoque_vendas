@@ -3,6 +3,7 @@ package br.com.stockup.controller;
 import br.com.stockup.dto.CadastroProdutoDTO;
 import br.com.stockup.model.Produto;
 import br.com.stockup.service.ProdutoService;
+import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -18,12 +19,12 @@ public class ProdutoController {
     }
 
     @PostMapping("/cadastro")
-    public void cadastrar(@RequestBody CadastroProdutoDTO cadastroProdutoDTO) {
+    public void cadastrar(@Valid @RequestBody CadastroProdutoDTO cadastroProdutoDTO) {
         produtoService.cadastrarProduto(cadastroProdutoDTO);
     }
 
     @PutMapping("/{id}")
-    public void editar(@PathVariable Long id, @RequestBody CadastroProdutoDTO cadastroProdutoDTO) {
+    public void editar(@PathVariable Long id, @Valid @RequestBody CadastroProdutoDTO cadastroProdutoDTO) {
         produtoService.editar(id, cadastroProdutoDTO);
     }
 
