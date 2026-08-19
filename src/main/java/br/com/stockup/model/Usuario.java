@@ -2,6 +2,8 @@ package br.com.stockup.model;
 
 import br.com.stockup.enums.PerfilUsuario;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -21,12 +23,16 @@ public class Usuario {
     private Long id;
 
     @Column(nullable = false)
+    @NotBlank
     private String nome;
 
     @Column(nullable = false, unique = true) //Não pode existir dois usuários com o mesmo email.
+    @Email
+    @NotBlank
     private String email;
 
     @Column(nullable = false)
+    @NotBlank
     private String senha;
 
     private String codigoRecuperacao;

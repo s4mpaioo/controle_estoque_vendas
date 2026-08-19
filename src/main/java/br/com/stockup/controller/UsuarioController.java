@@ -3,6 +3,7 @@ package br.com.stockup.controller;
 import br.com.stockup.dto.*;
 import br.com.stockup.dto.RedefinirSenhaDTO;
 import br.com.stockup.service.UsuarioService;
+import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -10,23 +11,23 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-@RestController //responde requisições http
-@RequestMapping ("/usuarios") //tudo que é relacionado a usuarios
+@RestController
+@RequestMapping ("/usuarios")
 public class UsuarioController {
 
-    private final UsuarioService usuarioService; // aqui é como se a controler pedisse ajuda a service
+    private final UsuarioService usuarioService;
 
     public UsuarioController(UsuarioService usuarioService) {
         this.usuarioService = usuarioService;
     }
 
     @PostMapping("/cadastro")
-    public void cadastrar(@RequestBody CadastroUsuarioDTO cadastroUsuarioDTO) {
+    public void cadastrar(@Valid @RequestBody CadastroUsuarioDTO cadastroUsuarioDTO) {
         usuarioService.cadastrar(cadastroUsuarioDTO);
     }
 
     @PostMapping("/login")
-    public ResponseEntity<LoginResponseDTO> login(@RequestBody LoginUsuarioDTO loginUsuarioDTO) {
+    public ResponseEntity<LoginResponseDTO> login(@Valid @RequestBody LoginUsuarioDTO loginUsuarioDTO) {
         LoginResponseDTO response = usuarioService.login(loginUsuarioDTO);
         return ResponseEntity.ok(response);
     }
@@ -38,19 +39,19 @@ public class UsuarioController {
     }
 
     @PostMapping("/redefinir-senha")
-    public ResponseEntity<String> redefinirSenha(@RequestBody RedefinirSenhaDTO redefinirSenhaDTO) {
+    public ResponseEntity<String> redefinirSenha(@Valid @RequestBody RedefinirSenhaDTO redefinirSenhaDTO) {
         usuarioService.redefinirSenha(redefinirSenhaDTO);
         return ResponseEntity.ok("O código foi enviado para seu email.");
     }
 
     @PostMapping("/validar-codigo")
-    public ResponseEntity<String> validarCodigo(@RequestBody ValidarCodigoDTO validarCodigo) {
+    public ResponseEntity<String> validarCodigo(@Valid @RequestBody ValidarCodigoDTO validarCodigo) {
         usuarioService.validarCodigo(validarCodigo);
         return ResponseEntity.ok("Código válido.");
     }
 
     @PostMapping("/nova-senha")
-    public ResponseEntity<String> novaSenha(@RequestBody NovaSenhaDTO novaSenhaDTO) {
+    public ResponseEntity<String> novaSenha(@Valid @RequestBody NovaSenhaDTO novaSenhaDTO) {
         usuarioService.novaSenha(novaSenhaDTO);
         return ResponseEntity.ok("Senha alterada com sucesso.");
     }
