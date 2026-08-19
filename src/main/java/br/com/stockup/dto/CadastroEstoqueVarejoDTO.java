@@ -1,10 +1,7 @@
 package br.com.stockup.dto;
 
 import jakarta.validation.Valid;
-import jakarta.validation.constraints.Min;
-import jakarta.validation.constraints.NotEmpty;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Positive;
+import jakarta.validation.constraints.*;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -23,7 +20,7 @@ public class CadastroEstoqueVarejoDTO {
     private BigDecimal precoVenda;
 
     @NotNull
-    @Min(0)
+    @PositiveOrZero
     private Integer estoqueMinimo;
 
     @NotNull

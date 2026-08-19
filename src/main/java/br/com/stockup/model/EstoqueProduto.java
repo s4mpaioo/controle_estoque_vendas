@@ -28,14 +28,11 @@ public class EstoqueProduto {
     @Column(nullable = false)
     private BigDecimal precoVenda;
 
-    @Column(nullable = false)
-    private Integer estoqueMinimo = 0;
-
     @Enumerated(EnumType.STRING)
     private TipoEstoque tipoEstoque;
 
     @Enumerated(EnumType.STRING)
-    private Ficha  ficha;
+    private Ficha ficha;
 
     private Integer quantidadeFichas;
 
