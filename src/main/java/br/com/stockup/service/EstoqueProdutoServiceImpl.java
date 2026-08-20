@@ -40,6 +40,7 @@ public class EstoqueProdutoServiceImpl implements EstoqueProdutoService {
         estoqueProduto.setPrecoVenda(cadastroEstoqueAtacadoDTO.getPrecoVenda());
         estoqueProduto.setPrecoCusto(cadastroEstoqueAtacadoDTO.getPrecoCusto());
         estoqueProduto.setTipoEstoque(TipoEstoque.FICHA);
+        estoqueProduto.setEstoqueMinimo(cadastroEstoqueAtacadoDTO.getEstoqueMinimo());
         estoqueProduto.setFicha(cadastroEstoqueAtacadoDTO.getFicha());
         estoqueProduto.setQuantidadeFichas(cadastroEstoqueAtacadoDTO.getQuantidadeFichas());
 
@@ -66,6 +67,7 @@ public class EstoqueProdutoServiceImpl implements EstoqueProdutoService {
         estoqueProduto.setProduto(produto);
         estoqueProduto.setPrecoVenda(cadastroEstoqueVarejoDTO.getPrecoVenda());
         estoqueProduto.setPrecoCusto(cadastroEstoqueVarejoDTO.getPrecoCusto());
+        estoqueProduto.setEstoqueMinimo(cadastroEstoqueVarejoDTO.getEstoqueMinimo());
         estoqueProduto.setTipoEstoque(TipoEstoque.PAR);
 
         estoqueProdutoRepository.save(estoqueProduto);

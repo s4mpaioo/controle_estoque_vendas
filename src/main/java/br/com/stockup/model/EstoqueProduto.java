@@ -3,6 +3,7 @@ package br.com.stockup.model;
 import br.com.stockup.enums.Ficha;
 import br.com.stockup.enums.TipoEstoque;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.PositiveOrZero;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -33,6 +34,10 @@ public class EstoqueProduto {
 
     @Enumerated(EnumType.STRING)
     private Ficha ficha;
+
+    @Column(nullable = false)
+    @PositiveOrZero
+    private Integer estoqueMinimo = 0;
 
     private Integer quantidadeFichas;
 
