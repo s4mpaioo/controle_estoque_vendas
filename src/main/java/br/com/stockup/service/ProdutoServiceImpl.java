@@ -1,6 +1,7 @@
 package br.com.stockup.service;
 
 import br.com.stockup.dto.CadastroProdutoDTO;
+import br.com.stockup.enums.StatusProduto;
 import br.com.stockup.model.EstoqueProduto;
 import br.com.stockup.model.EstoqueTamanho;
 import br.com.stockup.model.Loja;
@@ -82,7 +83,9 @@ public class ProdutoServiceImpl implements ProdutoService {
 
         validarProdutoSemEstoque(produtoEncontrado);
 
-        produtoRepository.delete(produtoEncontrado);
+        produtoEncontrado.setExcluido(true);
+
+        produtoRepository.save(produtoEncontrado);
     }
 
     @Override
@@ -107,8 +110,8 @@ public class ProdutoServiceImpl implements ProdutoService {
     }
 
     @Override
-    public List<Produto> listarTodos() {
-        return produtoRepository.findAll();
+    public List<Produto> findByStatusNot(StatusProduto status) {
+        return produtoRepository.findByStatusNot(status);
     }
 
     private void validarProdutoSemEstoque(Produto produto) {

@@ -1,6 +1,7 @@
 package br.com.stockup.model;
 
 import br.com.stockup.enums.ModeloProduto;
+import br.com.stockup.enums.StatusProduto;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
@@ -37,6 +38,12 @@ public class Produto {
 
     @Enumerated(EnumType.STRING)
     private ModeloProduto modelo;
+
+    @Enumerated(EnumType.STRING)
+    private StatusProduto status = StatusProduto.EM_ESTOQUE;
+
+    @Column(nullable = false)
+    private boolean excluido = false;
 
     @Column(nullable = false)
     @NotBlank(message = "A cor do produto não pode ser vazio")
