@@ -33,7 +33,14 @@ public class ProdutoServiceImpl implements ProdutoService {
             throw new RuntimeException("Já existe um produto com esta referência e cor.");
         }
 
+        Produto produto = criarProduto(cadastroProdutoDTO, loja);
+
+        produtoRepository.save(produto);
+    }
+
+    private Produto criarProduto(CadastroProdutoDTO cadastroProdutoDTO, Loja loja) {
         Produto produto = new Produto();
+
         produto.setReferencia(cadastroProdutoDTO.getReferencia());
         produto.setNome(cadastroProdutoDTO.getNome());
         produto.setMarca(cadastroProdutoDTO.getMarca());
@@ -43,7 +50,7 @@ public class ProdutoServiceImpl implements ProdutoService {
 
         produto.setLoja(loja);
 
-        produtoRepository.save(produto);
+        return produto;
     }
 
     @Override
@@ -110,8 +117,8 @@ public class ProdutoServiceImpl implements ProdutoService {
     }
 
     @Override
-    public List<Produto> findByStatusNot(StatusProduto status) {
-        return produtoRepository.findByStatusNot(status);
+    public List<Produto> listarTodos() {
+        return produtoRepository.findByExcluidoFalse();
     }
 
     private void validarProdutoSemEstoque(Produto produto) {

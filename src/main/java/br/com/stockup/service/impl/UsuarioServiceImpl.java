@@ -34,28 +34,41 @@ public class UsuarioServiceImpl implements UsuarioService {
             throw new RuntimeException("Email já cadastrado");
         }
 
+        Usuario usuario = criarUsuario(cadastroUsuarioDTO);
+
+        usuarioRepository.save(usuario);
+
+        Loja loja = criarLoja(cadastroUsuarioDTO, usuario);
+
+        lojaRepository.save(loja);
+    }
+
+    private Usuario criarUsuario(CadastroUsuarioDTO cadastroUsuarioDTO) {
         Usuario usuario = new Usuario();
+
         usuario.setNome(cadastroUsuarioDTO.getNome());
         usuario.setEmail(cadastroUsuarioDTO.getEmail());
         usuario.setSenha(passwordEncoder.encode(cadastroUsuarioDTO.getSenha()));
         usuario.setPerfil(PerfilUsuario.PROPRIETARIO);
 
-        usuarioRepository.save(usuario);
+        return usuario;
+    }
 
+    private Loja criarLoja(CadastroUsuarioDTO cadastroUsuarioDTO, Usuario usuario) {
         Loja loja = new Loja();
 
-        loja.setNome((cadastroUsuarioDTO.getNomeLoja()));
+        loja.setNome(cadastroUsuarioDTO.getNomeLoja());
         loja.setTipo(cadastroUsuarioDTO.getTipoLoja());
         loja.setUsuario(usuario);
 
-        lojaRepository.save(loja);
+        return loja;
     }
 
     public LoginResponseDTO login(LoginUsuarioDTO loginUsuarioDTO) {
         Optional<Usuario> usuario = usuarioRepository.findByEmail(loginUsuarioDTO.getEmail());
 
         if (usuario.isEmpty()) {
-            throw new RuntimeException("Email ou senha inválidos.");
+            throw new RuntimeException("Email inválido.");
         }
 
         Usuario usuarioEncontrado = usuario.get();
