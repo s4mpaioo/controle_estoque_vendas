@@ -1,9 +1,8 @@
-package br.com.stockup.dto;
+package br.com.stockup.dto.request;
 
 import br.com.stockup.enums.Ficha;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
-import jakarta.validation.constraints.PositiveOrZero;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -21,10 +20,6 @@ public class CadastroEstoqueAtacadoDTO {
     @NotNull
     @Positive
     private Integer quantidadeFichas;
-
-    @NotNull
-    @PositiveOrZero
-    private Integer estoqueMinimo;
 
     @NotNull
     @Positive

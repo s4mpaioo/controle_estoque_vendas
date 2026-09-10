@@ -1,4 +1,4 @@
-package br.com.stockup.dto;
+package br.com.stockup.dto.request;
 
 import br.com.stockup.enums.TipoLoja;
 import jakarta.validation.constraints.Email;

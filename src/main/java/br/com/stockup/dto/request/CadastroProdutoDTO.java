@@ -1,21 +1,25 @@
-package br.com.stockup.dto;
+package br.com.stockup.dto.request;
 
 import br.com.stockup.enums.ModeloProduto;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
+import lombok.Getter;
+import lombok.Setter;
 
-public class EditarProdutoDTO {
+@Getter
+@Setter
+public class CadastroProdutoDTO {
     @NotBlank(message = "A referência é obrigatória.")
     private String referencia;
 
-    @NotBlank(message = "O nome do produto é obrigatório.")
+    @NotBlank(message = "O nome é obrigatório.")
     private String nome;
 
     @NotBlank(message = "A marca é obrigatória.")
     private String marca;
 
-    @NotNull
+    @NotNull(message = "O modelo é obrigatório.")
     private ModeloProduto modelo;
 
     @NotBlank(message = "A cor é obrigatória.")
@@ -26,4 +30,7 @@ public class EditarProdutoDTO {
     private Integer estoqueMinimo;
 
     private String descricao;
+
+    @NotNull(message = "A loja é obrigatória.")
+    private Long lojaId;
 }

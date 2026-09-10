@@ -1,4 +1,4 @@
-package br.com.stockup.dto;
+package br.com.stockup.dto.request;
 
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.*;
@@ -18,10 +18,6 @@ public class CadastroEstoqueVarejoDTO {
     @NotNull
     @Positive
     private BigDecimal precoVenda;
-
-    @NotNull
-    @PositiveOrZero
-    private Integer estoqueMinimo;
 
     @NotNull
     private Long produtoId;

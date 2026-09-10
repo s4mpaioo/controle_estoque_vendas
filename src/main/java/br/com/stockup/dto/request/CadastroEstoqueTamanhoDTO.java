@@ -1,4 +1,4 @@
-package br.com.stockup.dto;
+package br.com.stockup.dto.request;
 
 import br.com.stockup.enums.Tamanho;
 import jakarta.validation.constraints.NotNull;
