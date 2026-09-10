@@ -1,11 +1,13 @@
-package br.com.stockup.service;
+package br.com.stockup.service.impl;
 
-import br.com.stockup.dto.*;
+import br.com.stockup.dto.request.*;
+import br.com.stockup.dto.response.LoginResponseDTO;
 import br.com.stockup.enums.PerfilUsuario;
 import br.com.stockup.model.Loja;
 import br.com.stockup.model.Usuario;
 import br.com.stockup.repository.LojaRepository;
 import br.com.stockup.repository.UsuarioRepository;
+import br.com.stockup.service.UsuarioService;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -18,13 +20,13 @@ import java.util.Optional;
 public class UsuarioServiceImpl implements UsuarioService {
     private final UsuarioRepository usuarioRepository;
     private final LojaRepository lojaRepository;
-    private final EmailService emailService;
+    private final EmailServiceImpl emailServiceImpl;
     private final PasswordEncoder passwordEncoder;
 
-    public UsuarioServiceImpl(UsuarioRepository usuarioRepository, LojaRepository lojaRepository, EmailService emailService, PasswordEncoder passwordEncoder) {
+    public UsuarioServiceImpl(UsuarioRepository usuarioRepository, LojaRepository lojaRepository, EmailServiceImpl emailServiceImpl, PasswordEncoder passwordEncoder) {
         this.usuarioRepository = usuarioRepository;
         this.lojaRepository = lojaRepository;
-        this.emailService = emailService;
+        this.emailServiceImpl = emailServiceImpl;
         this.passwordEncoder = passwordEncoder;
     }
 
@@ -100,7 +102,7 @@ public class UsuarioServiceImpl implements UsuarioService {
 
         usuarioRepository.save(usuarioEncontrado);
 
-        emailService.enviarCodigoRecuperacao(usuarioEncontrado.getEmail(), usuarioEncontrado.getCodigoRecuperacao());
+        emailServiceImpl.enviarCodigoRecuperacao(usuarioEncontrado.getEmail(), usuarioEncontrado.getCodigoRecuperacao());
     }
 
     public void validarCodigo(ValidarCodigoDTO validarCodigoDTO) {

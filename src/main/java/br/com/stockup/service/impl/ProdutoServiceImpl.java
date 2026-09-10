@@ -1,12 +1,13 @@
-package br.com.stockup.service;
+package br.com.stockup.service.impl;
 
-import br.com.stockup.dto.CadastroProdutoDTO;
-import br.com.stockup.enums.StatusProduto;
+import br.com.stockup.dto.request.CadastroProdutoDTO;
+import br.com.stockup.enums.TipoEstoque;
 import br.com.stockup.model.EstoqueProduto;
 import br.com.stockup.model.EstoqueTamanho;
 import br.com.stockup.model.Loja;
 import br.com.stockup.model.Produto;
 import br.com.stockup.repository.LojaRepository;
+import br.com.stockup.service.ProdutoService;
 import org.springframework.stereotype.Service;
 import br.com.stockup.repository.ProdutoRepository;
 
@@ -29,7 +30,7 @@ public class ProdutoServiceImpl implements ProdutoService {
         Loja loja = lojaRepository.findById(cadastroProdutoDTO.getLojaId())
                 .orElseThrow(() -> new RuntimeException("Loja não encontrada."));
 
-        if(produtoRepository.existsByReferenciaAndCor(cadastroProdutoDTO.getReferencia(), cadastroProdutoDTO.getCor())) {
+        if(produtoRepository.existsByReferenciaAndCorAndExcluidoFalse(cadastroProdutoDTO.getReferencia(), cadastroProdutoDTO.getCor())) {
             throw new RuntimeException("Já existe um produto com esta referência e cor.");
         }
 
@@ -47,6 +48,7 @@ public class ProdutoServiceImpl implements ProdutoService {
         produto.setModelo(cadastroProdutoDTO.getModelo());
         produto.setCor(cadastroProdutoDTO.getCor());
         produto.setDescricao(cadastroProdutoDTO.getDescricao());
+        produto.setEstoqueMinimo(cadastroProdutoDTO.getEstoqueMinimo());
 
         produto.setLoja(loja);
 
@@ -55,7 +57,7 @@ public class ProdutoServiceImpl implements ProdutoService {
 
     @Override
     public void editar(Long id, CadastroProdutoDTO cadastroProdutoDTO) {
-        Optional<Produto> produto = produtoRepository.findById(id);
+        Optional<Produto> produto = produtoRepository.findByIdAndExcluidoFalse(id);
 
         if (produto.isEmpty()) {
             throw new RuntimeException("Produto não encontrado.");
@@ -63,7 +65,7 @@ public class ProdutoServiceImpl implements ProdutoService {
 
         Produto produtoEncontrado = produto.get();
 
-        Optional<Produto> produtoReferencia = produtoRepository.findByReferenciaAndCor(cadastroProdutoDTO.getReferencia(), cadastroProdutoDTO.getCor());
+        Optional<Produto> produtoReferencia = produtoRepository.findByReferenciaAndCorAndExcluidoFalse(cadastroProdutoDTO.getReferencia(), cadastroProdutoDTO.getCor());
 
         if (produtoReferencia.isPresent() && !produtoReferencia.get().getId().equals(id)) {
             throw new RuntimeException("Já existe um produto com esta referência e cor.");
@@ -81,7 +83,7 @@ public class ProdutoServiceImpl implements ProdutoService {
 
     @Override
     public void excluir(Long id) {
-        Optional <Produto> produto = produtoRepository.findById(id);
+        Optional <Produto> produto = produtoRepository.findByIdAndExcluidoFalse(id);
         if (produto.isEmpty()) {
             throw new  RuntimeException("Produto não encontrado.");
         }
@@ -96,8 +98,11 @@ public class ProdutoServiceImpl implements ProdutoService {
     }
 
     @Override
-    public Produto buscarPorId(Long id) {
-        return produtoRepository.findById(id)
+    public Produto buscarPorReferencia(String referencia) {
+        if(referencia == null || referencia.isBlank()) {
+            throw new RuntimeException("Informe a referência do produto.");
+        }
+        return produtoRepository.findByReferenciaAndExcluidoFalse(referencia)
                 .orElseThrow(() -> new RuntimeException("Produto não encontrado."));
     }
 
@@ -107,7 +112,7 @@ public class ProdutoServiceImpl implements ProdutoService {
             throw new RuntimeException("Informe o nome do produto.");
         }
 
-        List<Produto> produtos = produtoRepository.findByNomeContainingIgnoreCase(nome);
+        List<Produto> produtos = produtoRepository.findByNomeContainingIgnoreCaseAndExcluidoFalse(nome);
 
         if(produtos.isEmpty()){
             throw new RuntimeException("Nenhum produto encontrado.");
@@ -122,11 +127,31 @@ public class ProdutoServiceImpl implements ProdutoService {
     }
 
     private void validarProdutoSemEstoque(Produto produto) {
-        for (EstoqueProduto estoque : produto.getEstoques()) {
-            for (EstoqueTamanho tamanho : estoque.getQuantidadePorTamanho()) {
-                if (tamanho.getQuantidade() != null && tamanho.getQuantidade() > 0) {
+        for(EstoqueProduto estoque : produto.getEstoques()) {
+            for(EstoqueTamanho tamanho : estoque.getQuantidadePorTamanho()) {
+                if(tamanho.getQuantidade() != null && tamanho.getQuantidade() > 0) {
                     throw new RuntimeException("Não é possível excluir um produto que possui estoque cadastrado.");
                 }
+            }
+        }
+    }
+
+    private void validarProdutoVarejoSemEstoque(Produto produto) {
+        for(EstoqueProduto estoque : produto.getEstoques()) {
+            if(estoque.getTipoEstoque() == TipoEstoque.PAR) {
+                for(EstoqueTamanho estoqueTamanho : estoque.getQuantidadePorTamanho()) {
+                    if(estoqueTamanho.getQuantidade() != null && estoqueTamanho.getQuantidade() > 0) {
+                        throw new RuntimeException("Não é possível excluir um produto que possui em estoque.");
+                    }
+                }
+            }
+        }
+    }
+
+    private void validarProdutoAtacadoSemEstoque(Produto produto) {
+        for(EstoqueProduto estoque : produto.getEstoques()) {
+            if(estoque.getTipoEstoque() == TipoEstoque.FICHA && estoque.getQuantidadeFichas() > 0) {
+                throw new RuntimeException("Não é possível excluir um produto que possui em estoque.");
             }
         }
     }
